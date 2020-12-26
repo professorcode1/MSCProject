@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <% if(falseAnswerSubmitted){ %>
+  <div>
+    <h1>
+      Sahaj use this div to display message "wrong answer", and make it have neon red border to make it look cool(use the stroke property in css)
+    </h1>
+  </div>
+  <%}%>
+    <% if(correctAnswerSubmitted){ %>
+  <div>
+    <h1>
+      Sahaj use this div to display message "Right answer", and give it neon green border.
+    </h1>
+  </div>
+  <%}%>
+    <% if(cooldownViolated){%>
+  <div>
+    <h1>Sahaj use this div to display the message "Cooldown period violated. Please wait 2 seconds before resubmitting an answer."</h1>
+  </div>
+  <%}%>
+
+      <!-- the below code will deal with the cards that display hint -->
+      <!-- a card status of 1 reflects that card is locked, 2 reflects card is asking "are you sure", 3 reflects card is unlocked -->
+      <% if(cardOneStatus === 1){ %>
+  <div>
+    <a href="/playground/showConfirmationCard">Here you put the lock card</a>
+  </div>
+  <% }else if(cardOneStatus === 2){ %>
+  <div>
+    here you put the card asking "are you sure?" <a href="/gethint">yes</a><a href="/playground">no</a>
+  </div>
+  <% }else if(cardOneStatus === 3){ %>
+    <div>
+        here we put the hint which current says <%=hint1%>
+    </div>
+  <% } %>
+
+
+
+  <% if(cardTwoStatus === 1){ %>
+  <div>
+    <a href="/playground/showConfirmationCard">Here you put the lock card</a>
+  </div>
+  <% }else if(cardTwoStatus === 2){ %>
+  <div>
+    here you put the card asking "are you sure?" <a href="/gethint">yes</a><a href="/playground">no</a>
+  </div>
+  <% }else if(cardTwoStatus === 3){ %>
+    <div>
+      here we put the hint which current says <%=hint2%>
+    </div>
+  <% } %>
+
+
+  <% if(cardThreeStatus === 1){ %>
+  <div>
+    <a href="/playground/showConfirmationCard">Here you put the lock card</a>
+  </div>
+  <% }else if(cardThreeStatus === 2){ %>
+  <div>
+    here you put the card asking "are you sure?" <a href="/gethint">yes</a><a href="/playground">no</a>
+  </div>
+  <% }else if(cardThreeStatus=== 3){ %>
+    <div>
+        here we put the hint which current says <%=hint3%>
+    </div>
+  <% } %>
+  <!-- hint card code ends here -->
+
+  <p><%=questionContent%></p>
+  <form action="/playground" method="post">
+    <input type="text" name="response" required placeholder="Your Answer">
+    <button type="submit" name="button">Submit</button>
+  </form>
+  <a href="/logout">logout</a>
+</body>
+
+</html>
