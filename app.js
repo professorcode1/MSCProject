@@ -30,7 +30,7 @@ mongoose.set("useCreateIndex", true);
 
 const userSchema = new mongoose.Schema({
   answersArray: [mongoose.Types.ObjectId],
-  adminPrivilege:Boolean,
+  adminPrivilege: Boolean,
   numerOfMembers: Number,
   memberOneName: String,
   memberOneEmail: String,
@@ -44,17 +44,18 @@ const userSchema = new mongoose.Schema({
   score: Number, //0 when constructor is called
   currentQuestion: Number, //1 when constructor is called
   hintTaken: [Boolean], //an array with 75 elements representing the 75 hints.Will be set to true if hint taken,false otherwise.
-  latestAnswerTime: Number //milliseconds that passed b/w when the latest answer was given and when the contest started.Will be set to sentinal infinity on construction
+  latestAnswerTime: Date //milliseconds that passed b/w when the latest answer was given and when the contest started.Will be set to sentinal infinity on construction
 });
 userSchema.plugin(passportLocalMongoose);
 const answerSchema = new mongoose.Schema({
   team: mongoose.Types.ObjectId,
-  time: Number, //this number will represents how many milliseconds passed b/w when the contest startred to when the answer was submitted.
+  time: Date, //this number will represents how many milliseconds passed b/w when the contest startred to when the answer was submitted.
   correctness: Boolean,
   questionAttempted: Number,
   hintOneTaken: Boolean,
   hintTwoTaken: Boolean,
-  hintThreeTaken: Boolean
+  hintThreeTaken: Boolean,
+  answerSubmitted:String
 });
 
 
@@ -63,7 +64,8 @@ const Answer = new mongoose.model("answer", answerSchema);
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-//
+
+
 // the above code sets up the enviornment. Is volatile, even changing the order of things will cause Undocument Behaviour
 
 //LOGICAL CODE FOR THE BACKEND
@@ -82,7 +84,7 @@ const hashedAnswers = [
   "$2b$08$DTteHhl7blZgP0UsImqZTeloY38k46Q1mP9TG1n1wiuaRzSWcgcTa", //5
   "$2b$08$Z2L/7udm90kWKVyx8KJyy.jhF35lvIUisRPDMZ0HW7kdnVqMggom.", //6
   "$2b$08$.21NJuj9CUTz1L6O/FH3z.qCiDTuIp3NgHp/cEm6QHCxWoAGsR0Cq", //7
-  "$2b$08$BWmAEfAKlBEkE8SQ3TSmhub9jA1rPTXeVs.mqdzXC0Xya9x0Ju8N6", //8
+  "$2b$08$pePUqXFxL2wAx0WD5pifT.y91P2GzN75d77PVVmOyjl8rArTggXVW", //8
   "$2b$08$9IT2xcyxJxkusbMgS2soReHxusqsHDAzN3UO0qihI0Set.swjXQ1y", //9
   "$2b$08$9DQ7R1EvmG.1SxcfrCTkRuallddX.YkqpRrzGKyBcW3lc.8GkTtIm", //10
   "$2b$08$bdnngmc3iJfziYIAkkO2Wepd2JogrdcoM/B018IrrrhPgyo60PTOS", //11
@@ -128,85 +130,59 @@ const questionContent = [
   "What's the capital of Spain?", //madrid
   "How many makes up a baker's dozen?" //thirteen
 ];
+
 app.get("/playground", (req, res) => {
-  if (req.isAuthenticated()) {
-    {
-      res.render("playground", {
-        questionContent: questionContent[req.user.currentQuestion - 1],
-        showConfirmationCard:false,
-        hint1 : (req.user.hintTaken[((req.user.currentQuestion-1)*3)] ? "Hello world, I am hint 1!" : ""),
-        hint2 : (req.user.hintTaken[((req.user.currentQuestion-1)*3)+1] ? "Hello world, I am hint 2!" : ""),
-        hint3 : (req.user.hintTaken[((req.user.currentQuestion-1)*3)+2] ? "Hello world, I am hint 3!" : ""),
-        falseAnswerSubmitted:false,
-        correctAnswerSubmitted:false,
-        cardOneStatus: (req.user.hintTaken[((req.user.currentQuestion-1)*3)] ? 3 : 1),
-        cardTwoStatus : (req.user.hintTaken[((req.user.currentQuestion-1)*3)+1] ? 3 : 1),
-        cardThreeStatus : (req.user.hintTaken[((req.user.currentQuestion-1)*3)+2] ? 3 : 1),
-        cooldownViolated:false
-      });
-    }
-  } else {
-    res.redirect("/login");
-  }
-});
-app.get("/playground/:state",(req,res)=>{
   //state can be "falseAnswerSubmitted" which que's us to tell the user he submitted a false answer,
   //state can be "correctAnswerSubmitted" which que's us to tell the user he submitted the correct answer,
   //state can be "showConfirmationCard" which means user asked for a hint and we need to show him confirmation card.
   //state can be "cooldownViolated" which mean user submitted before the cooldown period was complete
-  if(req.isAuthenticated())
-  {
+  if (req.isAuthenticated()) {
     // a card status of 1 reflects that card is locked, 2 reflects card is asking "are you sure", 3 reflects card is unlocked
-    let cardOneStatus = (req.user.hintTaken[((req.user.currentQuestion-1)*3)] ? 3 : 1);
-    let cardTwoStatus = (req.user.hintTaken[((req.user.currentQuestion-1)*3)+1] ? 3 : 1);
-    let cardThreeStatus = (req.user.hintTaken[((req.user.currentQuestion-1)*3)+2] ? 3 : 1);
-    if(req.params.state === "showConfirmationCard")
-    {
-      if(cardOneStatus === 1)
-      {
+    let cardOneStatus = (req.user.hintTaken[((req.user.currentQuestion - 1) * 3)] ? 3 : 1);
+    let cardTwoStatus = (req.user.hintTaken[((req.user.currentQuestion - 1) * 3) + 1] ? 3 : 1);
+    let cardThreeStatus = (req.user.hintTaken[((req.user.currentQuestion - 1) * 3) + 2] ? 3 : 1);
+    if (req.query.showConfirmationCard) {
+      if (cardOneStatus === 1) {
         cardOneStatus = 2;
-      }
-      else if(cardTwoStatus === 1)
-      {
+      } else if (cardTwoStatus === 1) {
         cardTwoStatus = 2;
-      }
-      else if(cardThreeStatus === 1 )
-      {
+      } else if (cardThreeStatus === 1) {
         cardThreeStatus = 2;
       }
     }
-    res.render("playground",{
-      hint1 : (req.user.hintTaken[((req.user.currentQuestion-1)*3)] ? "Hello world, I am hint 1!" : ""),
-      hint2 : (req.user.hintTaken[((req.user.currentQuestion-1)*3)+1] ? "Hello world, I am hint 2!" : ""),
-      hint3 : (req.user.hintTaken[((req.user.currentQuestion-1)*3)+2] ? "Hello world, I am hint 3!" : ""),
-      falseAnswerSubmitted : (req.params.state === "falseAnswerSubmitted"),
-      correctAnswerSubmitted : (req.params.state === "correctAnswerSubmitted"),
+    res.render("playground", {
+      hint1: (req.user.hintTaken[((req.user.currentQuestion - 1) * 3)] ? "Hello world, I am hint 1!" : ""),
+      hint2: (req.user.hintTaken[((req.user.currentQuestion - 1) * 3) + 1] ? "Hello world, I am hint 2!" : ""),
+      hint3: (req.user.hintTaken[((req.user.currentQuestion - 1) * 3) + 2] ? "Hello world, I am hint 3!" : ""),
+      falseAnswerSubmitted: (req.query.falseAnswerSubmitted ? true : false),
+      correctAnswerSubmitted: (req.query.correctAnswerSubmitted ? true : false),
       questionContent: questionContent[req.user.currentQuestion - 1],
-      cooldownViolated:(req.params.state === "cooldownViolated"),
-      cardOneStatus:cardOneStatus,
-      cardTwoStatus:cardTwoStatus,
-      cardThreeStatus:cardThreeStatus
+      cooldownViolated: (req.query.cooldownViolated ? true : false),
+      cardOneStatus: cardOneStatus,
+      cardTwoStatus: cardTwoStatus,
+      cardThreeStatus: cardThreeStatus
     });
-  }else{
+  } else {
     res.redirect("/login");
   }
 });
+
 app.post("/playground", (req, res) => {
   if (req.isAuthenticated()) {
-    if(((new Date() - startingTime) - req.user.latestAnswerTime) < cooldownPeriod)
-    {
-      return res.redirect("/playground/cooldownViolated");
+    if (((new Date())- req.user.latestAnswerTime) < cooldownPeriod) {
+      return res.redirect("/playground/?cooldownViolated=true");
     }
     bcrypt.compare(req.body.response, hashedAnswers[req.user.currentQuestion - 1], (err, result) => {
-      let hintIndex = (req.user.currentQuestion-1)*3;
+      let hintIndex = (req.user.currentQuestion - 1) * 3;
       const answer = new Answer({
         team: req.user._id,
-        time: (new Date() - startingTime), //this number will represents how many milliseconds passed b/w when the contest startred to when the answer was submitted.
+        time: new Date(), //this number will represents how many milliseconds passed b/w when the contest startred to when the answer was submitted.
         correctness: result,
         questionAttempted: req.user.currentQuestion,
         hintOneTaken: req.user.hintTaken[hintIndex],
         hintTwoTaken: req.user.hintTaken[hintIndex + 1],
-        hintThreeTaken: req.user.hintTaken[hintIndex + 2]
+        hintThreeTaken: req.user.hintTaken[hintIndex + 2],
+        answerSubmitted:req.body.response
       });
       answer.save();
       let newAnswerArray = req.user.answersArray;
@@ -217,33 +193,79 @@ app.post("/playground", (req, res) => {
         }, {
           score: (req.user.score + 100),
           currentQuestion: (req.user.currentQuestion + 1),
-          latestAnswerTime: (new Date() - startingTime),
+          latestAnswerTime: new Date(),
           answersArray: newAnswerArray
         }, (err) => {
           if (err) {
             console.log(err);
           }
         });
-        res.redirect("/playground/correctAnswerSubmitted");
+        res.redirect("/playground/?correctAnswerSubmitted=true");
       } else {
         User.updateOne({
           _id: req.user._id
         }, {
-          latestAnswerTime: (new Date() - startingTime),
+          latestAnswerTime: new Date(),
           answersArray: newAnswerArray
         }, (err) => {
           if (err) {
             console.log(err);
           }
         });
-        res.redirect("/playground/falseAnswerSubmitted");
+        res.redirect("/playground/?falseAnswerSubmitted=true");
       }
     });
   } else {
     res.redirect("/login");
   }
 });
-// below code are all the route requests
+
+// below code are all the route request
+app.get("/admin", (req, res) => {
+  if (req.isAuthenticated()) {
+    if (req.user.adminPrivilege) {
+      User.find((err, user) => {
+        if (!err) {
+          res.render("admin", {
+            teams: user
+          });
+        } else {
+          console.log(err);
+        }
+      });
+    } else {
+      res.redirect("/playground");
+    }
+  } else {
+    res.redirect("/login");
+  }
+});
+app.get("/teamanswerhistory", (req, res) => {
+  if (req.isAuthenticated()) {
+    if (req.user.adminPrivilege && req.query.teamid) {
+      (async () => {
+        const teamAnswerHistory = (await User.findById(req.query.teamid).exec()).answersArray;
+        let teamAnswerHistoryObj = [];
+        for(const answerId of teamAnswerHistory)
+        {
+          const rndmVar = await Answer.findById(answerId).exec();
+          teamAnswerHistoryObj.push({
+            answerSubmitted : rndmVar.answerSubmitted,
+            timeOfSubmission: rndmVar.time
+          });
+        }
+        teamAnswerHistoryObj.reverse();
+        res.render("teamanswerhistory",{answerHistory:teamAnswerHistoryObj});
+      })(); //Using a Immediately Invoked Function Expression(IIFE) as setting it to async allows mongoodb to act inside as if it returns objects instead of promises
+      //and helps me avoide writing many .then functions as everything can be done from the same control flow
+      return ;
+    } else {
+      res.redirect("/playground");
+    }
+  } else {
+    res.redirect("/login");
+  }
+});
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/homepage.html");
 });
@@ -332,11 +354,11 @@ app.post("/register", (req, res) => {
         memberThreeName: req.body.nameOfMem3,
         memberThreeEmail: req.body.emailOfMem3,
         memberThreeInstitute: req.body.instituteOfMem3,
-        adminPrivilege:false,
+        adminPrivilege: false,
         score: 0, //0 when constructor is called
         currentQuestion: 1, //1 when constructor is called
         hintTaken: hintTaken, //true if the hint was taken, false otherwise (false on construction)
-        latestAnswerTime: (new Date(2022, 0) - new Date(0)) //milliseconds b/w 1 Jan 2022 &  1 jan 1970. so sentinal infinity
+        latestAnswerTime: new Date(0) //milliseconds b/w 1 Jan 2022 &  1 jan 1970. so sentinal infinity
       }, req.body.password, (err, user) => {
         if (!err) {
           passport.authenticate("local")(req, res, function() {

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h1>here is the teams answer history</h1>
+    <div>
+      <%answerHistory.forEach(element=>{%>
+        <%=element.answerSubmitted%>       <%=element.timeOfSubmission%><br>
+      <%});%>
+    </div>
+  </body>
+</html>

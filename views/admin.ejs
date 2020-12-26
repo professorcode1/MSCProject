@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h1>Display the answer history this team</h1>
+    <div>
+      <%teams.forEach(element=>{%>
+        <a href="/teamanswerhistory/?teamid=<%=element._id%>"><%=element.username%></a>
+      <%})%>
+    </div>
+  </body>
+</html>
