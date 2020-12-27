@@ -7,8 +7,9 @@
   <body>
     <h1>here is the teams answer history</h1>
     <div>
+      <%=currentScore%> <br>
       <%answerHistory.forEach(element=>{%>
-        <%=element.answerSubmitted%>       <%=element.timeOfSubmission%><br>
+        <%=element.answerSubmitted%>       <%=element.timeOfSubmission%>   <br>
       <%});%>
     </div>
   </body>

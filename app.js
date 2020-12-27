@@ -30,32 +30,82 @@ mongoose.set("useCreateIndex", true);
 
 const userSchema = new mongoose.Schema({
   answersArray: [mongoose.Types.ObjectId],
-  adminPrivilege: Boolean,
-  numerOfMembers: Number,
-  memberOneName: String,
-  memberOneEmail: String,
-  memberOneInstitute: String,
+  adminPrivilege: {
+    type: Boolean,
+    required: true
+  },
+  numerOfMembers: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: 3
+  },
+  memberOneName: {
+    type: String,
+    required: true
+  },
+  memberOneEmail: {
+    type: String,
+    required: true
+  },
+  memberOneInstitute: {
+    type: String,
+    required: true
+  },
   memberTwoName: String,
   memberTwoEmail: String,
   memberTwoInstitute: String,
   memberThreeName: String,
   memberThreeEmail: String,
   memberThreeInstitute: String,
-  score: Number, //0 when constructor is called
-  currentQuestion: Number, //1 when constructor is called
+  score: {
+    type: Number,
+    required: true
+  }, //0 when constructor is called
+  currentQuestion: {
+    type: Number,
+    required: true
+  }, //1 when constructor is called
   hintTaken: [Boolean], //an array with 75 elements representing the 75 hints.Will be set to true if hint taken,false otherwise.
-  latestAnswerTime: Date //milliseconds that passed b/w when the latest answer was given and when the contest started.Will be set to sentinal infinity on construction
+  latestAnswerTime: {
+    type: Number, //miliiseconds passed b/w now and the unix epoch
+    required: true
+  }
 });
 userSchema.plugin(passportLocalMongoose);
 const answerSchema = new mongoose.Schema({
-  team: mongoose.Types.ObjectId,
-  time: Date, //this number will represents how many milliseconds passed b/w when the contest startred to when the answer was submitted.
-  correctness: Boolean,
-  questionAttempted: Number,
-  hintOneTaken: Boolean,
-  hintTwoTaken: Boolean,
-  hintThreeTaken: Boolean,
-  answerSubmitted:String
+  team: {
+    type: mongoose.Types.ObjectId,
+    required: true
+  },
+  time: {
+    type: Number, //milliseconds passed till now from the unix epoch
+    required: true
+  },
+  correctness: {
+    type: Boolean,
+    required: true
+  },
+  questionAttempted: {
+    type: Number,
+    required: true
+  },
+  hintOneTaken: {
+    type: Boolean,
+    required: true
+  },
+  hintTwoTaken: {
+    type: Boolean,
+    required: true
+  },
+  hintThreeTaken: {
+    type: Boolean,
+    required: true
+  },
+  answerSubmitted: {
+    type: String,
+    required: true
+  }
 });
 
 
@@ -169,7 +219,7 @@ app.get("/playground", (req, res) => {
 
 app.post("/playground", (req, res) => {
   if (req.isAuthenticated()) {
-    if (((new Date())- req.user.latestAnswerTime) < cooldownPeriod) {
+    if (((new Date().getTime()) - req.user.latestAnswerTime) < cooldownPeriod) {
       return res.redirect("/playground/?cooldownViolated=true");
     }
     bcrypt.compare(req.body.response, hashedAnswers[req.user.currentQuestion - 1], (err, result) => {
@@ -182,7 +232,7 @@ app.post("/playground", (req, res) => {
         hintOneTaken: req.user.hintTaken[hintIndex],
         hintTwoTaken: req.user.hintTaken[hintIndex + 1],
         hintThreeTaken: req.user.hintTaken[hintIndex + 2],
-        answerSubmitted:req.body.response
+        answerSubmitted: req.body.response
       });
       answer.save();
       let newAnswerArray = req.user.answersArray;
@@ -240,32 +290,132 @@ app.get("/admin", (req, res) => {
     res.redirect("/login");
   }
 });
+
 app.get("/teamanswerhistory", (req, res) => {
+  if (!(req.query.teamid.match(/^[0-9a-fA-F]{24}$/))) {
+    return res.redirect("/");
+  }
   if (req.isAuthenticated()) {
     if (req.user.adminPrivilege && req.query.teamid) {
       (async () => {
-        const teamAnswerHistory = (await User.findById(req.query.teamid).exec()).answersArray;
+        if (!(await User.exists({
+            _id: req.query.teamid
+          }))) {
+          return res.redirect("/");
+        }
+        const user = await User.findById(req.query.teamid).exec();
+        const teamAnswerHistory = user.answersArray;
         let teamAnswerHistoryObj = [];
-        for(const answerId of teamAnswerHistory)
-        {
+        for (const answerId of teamAnswerHistory) {
           const rndmVar = await Answer.findById(answerId).exec();
           teamAnswerHistoryObj.push({
-            answerSubmitted : rndmVar.answerSubmitted,
-            timeOfSubmission: rndmVar.time
+            answerSubmitted: rndmVar.answerSubmitted,
+            timeOfSubmission: rndmVar.time,
           });
         }
         teamAnswerHistoryObj.reverse();
-        res.render("teamanswerhistory",{answerHistory:teamAnswerHistoryObj});
+        return res.render("teamanswerhistory", {
+          answerHistory: teamAnswerHistoryObj,
+          currentScore: user.score
+        });
       })(); //Using a Immediately Invoked Function Expression(IIFE) as setting it to async allows mongoodb to act inside as if it returns objects instead of promises
       //and helps me avoide writing many .then functions as everything can be done from the same control flow
-      return ;
+      return;
     } else {
-      res.redirect("/playground");
+      return res.redirect("/playground");
     }
   } else {
-    res.redirect("/login");
+    return res.redirect("/login");
   }
 });
+
+app.get("/systemstatecheck", (req, res) => {
+  //the function checks for data tampering and data corruption
+  if (req.isAuthenticated()) {
+    if (req.user.adminPrivilege) {
+      (async () => {
+        const allAnswers = await Answer.find();
+        const allUsers = await User.find();
+        let message = "";
+        //making sure all answers in the answers database map to a user
+        for (const answer of allAnswers) {
+          const user = await User.findById(answer.team);
+          if (!(user.answersArray.includes(answer._id))) {
+            message += "Issu detected : The following answer does not show up in the team's history it belongs to.<br>" + answer + "<br>";
+          }
+        }
+
+        for (const user of allUsers) {
+          if (user.adminPrivilege) {
+            continue;
+          }
+          for (const answerId of user.answersArray) {
+            if (!(await Answer.exists({
+                _id: answerId
+              }))) {
+              message += "Issue Detected: The following user has an answer that doesn't exist in the answer database.<br>";
+              message += user.username + "<br>";
+            }
+          }
+          let negativeMarking = 0;
+          for (let hintItrt = 0; hintItrt < 25; hintItrt++) {
+            let a = user.hintTaken[3 * hintItrt],
+              b = user.hintTaken[3 * hintItrt + 1],
+              c = user.hintTaken[3 * hintItrt + 2];
+            if (((!b) && c) || ((!a) && b)) {
+              message += "Issue detected : The following user has hint's for a question unlocked in the wrong order.<br>";
+              message += user.username + "<br>hintindex" + String(3 * hintItrt);
+            }
+            if (a) {
+              negativeMarking += penaltyHintOne;
+            }
+            if (b) {
+              negativeMarking += penaltyHintTwo;
+            }
+            if (c) {
+              negativeMarking += penaltyHintThree;
+            }
+          }
+          if (user.score !== (100 * (user.currentQuestion - 1)) - negativeMarking) {
+            message += "Issue detected : The following users score is askew.<br>" + user.username + ", expected score:," + String((100 * (user.currentQuestion - 1)) - negativeMarking);
+            message += "score:" + String(user.score) + "<br>";
+          }
+        }
+        res.render("message", {
+          message: message
+        });
+      })(); //Using a Immediately Invoked Function Expression(IIFE) as setting it to async allows mongoodb to act inside as if it returns objects instead of promises
+      //and helps me avoide writing many .then functions as everything can be done from the same control flow
+      return;
+    } else {
+      return res.redirect("/playground");
+    }
+  } else {
+    return res.redirect("/login");
+  }
+});
+
+app.get("/leaderboard", (req, res) => {
+  if (req.isAuthenticated()) {
+      (async () => {
+        board = await User.find({},{username:1,score:1,latestAnswerTime:1});
+        board.sort((left,right)=>{
+          if(left.score === right.score)
+          {
+            return left.latestAnswerTime - right.latestAnswerTime;
+          }
+          return right.score - left.score;
+        });
+        return res.render("leaderboard",{board:board});
+      })(); //Using a Immediately Invoked Function Expression(IIFE) as setting it to async allows mongoodb to act inside as if it returns objects instead of promises
+      //and helps me avoide writing many .then functions as everything can be done from the same control flow
+      return;
+  } else {
+    return res.redirect("/login");
+  }
+});
+
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/homepage.html");
 });
@@ -330,6 +480,7 @@ app.get("/gethint", (req, res) => {
     res.redirect("/login");
   }
 });
+
 app.post("/register", (req, res) => {
   User.exists({
     username: req.body.username
@@ -372,6 +523,7 @@ app.post("/register", (req, res) => {
     }
   });
 });
+
 app.post("/login", function(req, res) {
   const user = new User({
     username: req.body.username,

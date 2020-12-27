@@ -5,11 +5,12 @@
     <title></title>
   </head>
   <body>
-    <h1>Display the answer history this team</h1>
+    <h1>Display the answer history for this team</h1>
     <div>
       <%teams.forEach(element=>{%>
         <a href="/teamanswerhistory/?teamid=<%=element._id%>"><%=element.username%></a>
       <%})%>
+      Or run system consistency check by<a href="/systemstatecheck">clicking here</a>
     </div>
   </body>
 </html>

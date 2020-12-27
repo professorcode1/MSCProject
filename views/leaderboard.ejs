@@ -5,7 +5,8 @@
     <title></title>
   </head>
   <body>
-    <%= message %>
-    <a href="/playground">playground</a>
+    <%for(const team of board){%>
+      <%=team.username%>      <%=team.score%><br> 
+    <%}%>
   </body>
 </html>
