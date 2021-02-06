@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <a href="/leaderboard">LeaderBoard</a>
+  <% if(falseAnswerSubmitted){ %>
+  <div>
+    <h1>
+      Sahaj use this div to display message "wrong answer", and make it have neon red border to make it look cool(use the stroke property in css)
+    </h1>
+  </div>
+  <%}%>
+    <% if(correctAnswerSubmitted){ %>
+  <div>
+    <h1>
+      Sahaj use this div to display message "Right answer", and give it neon green border.
+    </h1>
+  </div>
+  <%}%>
+    <% if(cooldownViolated){%>
+  <div>
+    <h1>Sahaj use this div to display the message "Cooldown period violated. Please wait 2 seconds before resubmitting an answer."</h1>
+  </div>
+  <%}%>
+
+ no hints here lad.
+
+  <p><%=questionContent%></p>
+  <form action="/playground/Bonus" method="post">
+    <input type="text" name="response" required placeholder="Your Answer">
+    <button type="submit" name="button">Submit</button>
+  </form>
+  <a href="/logout">logout</a>
+</body>
+
+</html>

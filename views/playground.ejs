@@ -8,6 +8,7 @@
 
 <body>
   <a href="/leaderboard">LeaderBoard</a>
+  <a href="/playgroud">Playground</a> <br>
   <% if(falseAnswerSubmitted){ %>
   <div>
     <h1>
@@ -32,11 +33,11 @@
       <!-- a card status of 1 reflects that card is locked, 2 reflects card is asking "are you sure", 3 reflects card is unlocked -->
       <% if(cardOneStatus === 1){ %>
   <div>
-    <a href="/playground/?showConfirmationCard=true">Here you put the lock card</a>
+    <a href="/playground/<%=country%>/?showConfirmationCard=true">Here you put the lock card</a>
   </div>
   <% }else if(cardOneStatus === 2){ %>
   <div>
-    here you put the card asking "are you sure?" <a href="/gethint">yes</a><a href="/playground">no</a>
+    here you put the card asking "are you sure?" <a href="/gethint/<%=country%>">yes</a><a href="/playground/<%=country%>">no</a>
   </div>
   <% }else if(cardOneStatus === 3){ %>
     <div>
@@ -48,11 +49,11 @@
 
   <% if(cardTwoStatus === 1){ %>
   <div>
-    <a href="/playground/?showConfirmationCard=true">Here you put the lock card</a>
+    <a href="/playground/<%=country%>/?showConfirmationCard=true">Here you put the lock card</a>
   </div>
   <% }else if(cardTwoStatus === 2){ %>
   <div>
-    here you put the card asking "are you sure?" <a href="/gethint">yes</a><a href="/playground">no</a>
+    here you put the card asking "are you sure?" <a href="/gethint/<%=country%>">yes</a><a href="/playground/<%=country%>">no</a>
   </div>
   <% }else if(cardTwoStatus === 3){ %>
     <div>
@@ -63,11 +64,11 @@
 
   <% if(cardThreeStatus === 1){ %>
   <div>
-    <a href="/playground/?showConfirmationCard=true">Here you put the lock card</a>
+    <a href="/playground/<%=country%>/?showConfirmationCard=true">Here you put the lock card</a>
   </div>
   <% }else if(cardThreeStatus === 2){ %>
   <div>
-    here you put the card asking "are you sure?" <a href="/gethint">yes</a><a href="/playground">no</a>
+    here you put the card asking "are you sure?" <a href="/gethint/<%=country%>">yes</a><a href="/playground/<%=country%>">no</a>
   </div>
   <% }else if(cardThreeStatus=== 3){ %>
     <div>
@@ -77,7 +78,7 @@
   <!-- hint card code ends here -->
 
   <p><%=questionContent%></p>
-  <form action="/playground" method="post">
+  <form action="/playground/<%=country%>" method="post">
     <input type="text" name="response" required placeholder="Your Answer">
     <button type="submit" name="button">Submit</button>
   </form>
