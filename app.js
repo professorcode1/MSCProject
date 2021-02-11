@@ -396,6 +396,8 @@ app.get("/rules", (req, res) => res.sendFile(__dirname + "/webPages/Rules.html")
 app.get("/prizes", (req, res) => res.sendFile(__dirname + "/webPages/Prizes.html"));
 
 
+app.get("/loginFailed",(req,res) => res.render("message",{message:"You password or Username was incorrect. Try again"}));
+
 
 app.post("/login", function (req, res) {
   const user = new User({
@@ -404,7 +406,7 @@ app.post("/login", function (req, res) {
   });
   req.login(user, (err) => {
     if (!err) {
-      passport.authenticate("local", { failureRedirect: "/login" })(req, res, () => {
+      passport.authenticate("local", { failureRedirect: "/loginFailed" })(req, res, () => {
         res.redirect("/playground");
       });
     } else {
