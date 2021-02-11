@@ -1013,6 +1013,7 @@ app.get("/gethint/:country", (req, res) => {
 });
 
 //below is enviornment code
-app.listen(3000 || process.env.PORT, () => {
+var port_number = server.listen(process.env.PORT || 3000);
+app.listen(port_number, () => {
   console.log("Server started on port 3000");
 });
