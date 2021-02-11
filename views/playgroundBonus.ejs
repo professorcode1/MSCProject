@@ -3,39 +3,77 @@
 
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>Playground</title>
+  <link rel="stylesheet" href="/css/stylesTW.css">
+
+<script src="https://use.fontawesome.com/688dfff0c7.js"></script>
+
 </head>
 
-<body>
-  <a href="/leaderboard">LeaderBoard</a>
+<body class="text-gray-400 text-xl " style="background-color:#202020;">
+
+  <div class="flex sm:pl-28 m-5  "> 
+    <a href="/playground/India" class=" inline flex-1 items-stretch"> 🇮🇳 <span class="hidden md:inline"> India</span>  </a>
+    <a href="/playground/UnitedKingdom" class=" inline flex-1 items-stretch"> 🇬🇧 <span class="hidden md:inline"> UK </span> </a>
+    <a href="/playground/Greece" class=" inline flex-1 items-stretch"> 🇬🇷 <span class="hidden md:inline"> Greece</span> </a>
+    <a href="/playground/Egypt" class=" inline flex-1 items-stretch"> 🇪🇬 <span class="hidden md:inline"> Egypt</span></a>
+    <a href="/playground/Mayan" class=" inline flex-1 items-stretch"> 📜 <span class="hidden md:inline"> Mayan</span> </a>
+    <a href="/playground/Bonus" class=" inline flex-1 items-stretch"> 🗝️ <span class="hidden md:inline"> Bonus</span> </a>
+  </div> 
+
   <% if(falseAnswerSubmitted){ %>
-  <div>
-    <h1>
-      Sahaj use this div to display message "wrong answer", and make it have neon red border to make it look cool(use the stroke property in css)
-    </h1>
-  </div>
-  <%}%>
-    <% if(correctAnswerSubmitted){ %>
-  <div>
-    <h1>
-      Sahaj use this div to display message "Right answer", and give it neon green border.
-    </h1>
-  </div>
-  <%}%>
-    <% if(cooldownViolated){%>
-  <div>
-    <h1>Sahaj use this div to display the message "Cooldown period violated. Please wait 2 seconds before resubmitting an answer."</h1>
-  </div>
-  <%}%>
+    <div class="rounded-lg ring-4 ring-red-600 text-white font-black text-5xl flex justify-center m-5">
+      <h1 class="p-5 ">
+        Wrong Answer
+      </h1>
+    </div>
+    <%}%>
+      <% if(correctAnswerSubmitted){ %>
+    <div class="rounded-lg ring-4 ring-green-600 text-white font-black text-5xl flex justify-center m-5">
+      <h1 class="p-5">
+        Right answer
+      </h1>
+    </div>
+    <%}%>
+      <% if(cooldownViolated){%>
+    <div class="rounded-lg ring-4  text-white font-black text-2xl flex justify-center m-5">
+      <h1 class="p-5">Cooldown period violated. Please wait 2 seconds before resubmitting an answer.</h1>
+    </div>
+    <%}%>
 
- no hints here lad.
+    <div class="grid grid-cols-7  items-center p-5 ">
+      <div class="m-4 inline-block col-span-1 col-start-1 row-start-1 space-y-5 lg:space-y-20"> <!-- left navbar -->
+        <a href="/leaderboard"> <span class="hidden md:inline">Leader Board </span><i class="fa fa-trophy" aria-hidden="true"></i></a> <br>
+        <a href="/logout"> <span class="hidden md:inline">LogOut</span><i class="fa fa-sign-out" aria-hidden="true"></i></a><br>
+      </div> 
+      
+      <div class="m-4 pt-10 text-xl overflow-y-auto self-start inline-block col-span-7 col-start-1 row-start-2 lg:col-span-5 lg:row-start-1 lg:col-start-2"> <!-- question  -->
+        <span class="text-6xl p-1"> <%=country%> Question <%=questionNumber+1%> </span>
+        <p class="p-1"><%=questionContent%></p>
+        <form action="/playground/<%=country%>" method="post">
+          <input type="text" name="response" required placeholder="Your Answer" class="p-2 mt-4 border rounded-lg focus:ring-4 ring-inset ring-green-600">
+          <button type="submit" name="button" class="ml-5 m-1 pl-1 pr-1 p-1 bg-gray-600 rounded-lg text-grey-100 transition duration-500 ease-in-out hover:text-white hover:bg-green-700 transform hover:-translate-y-1 hover:scale-110">Submit</button>
+        </form>
 
-  <p><%=questionContent%></p>
-  <form action="/playground/Bonus" method="post">
-    <input type="text" name="response" required placeholder="Your Answer">
-    <button type="submit" name="button">Submit</button>
-  </form>
-  <a href="/logout">logout</a>
+      </div>
+
+      <div class="m-4 inline-block col-span-6 col-start-2 row-start-1 lg:col-span-1  lg:col-start-7 space-y-1 lg:space-y-5"><!-- hints -->
+              <!-- the below code will deal with the cards that display hint -->
+         <!-- a card status of 1 reflects that card is locked, 2 reflects card is asking "are you sure", 3 reflects card is unlocked -->
+         <div class="rounded-lg border-2">
+         <span class="hidden md:inline"> These questions have no hints.</span> <i class="fa fa-times-circle" aria-hidden="true"></i>
+      </div>
+
+      <div class="rounded-lg border-2">
+        <span class="hidden md:inline"> These questions have no hints.</span> <i class="fa fa-times-circle" aria-hidden="true"></i>
+      </div>
+
+      <div class="rounded-lg border-2">
+        <span class="hidden md:inline"> These questions have no hints.</span> <i class="fa fa-times-circle" aria-hidden="true"></i>
+      </div>
+        <!-- hint card code ends here -->
+      </div>
+    </div>
 </body>
 
 </html>

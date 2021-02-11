@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -11,7 +12,6 @@
 </head>
 
 <body class="text-gray-400 text-xl " style="background-color:#202020;">
-
   <div class="flex sm:pl-28 m-5  "> 
     <a href="/playground/India" class=" inline flex-1 items-stretch <%=country==="India" ? "font-extrabold" : ""%>"> 🇮🇳 <span class="hidden md:inline"> India</span>  </a>
     <a href="/playground/UnitedKingdom" class=" inline flex-1 items-stretch <%=country==="UnitedKingdom" ? "font-extrabold" : ""%>"> 🇬🇧 <span class="hidden md:inline"> UK </span> </a>
@@ -20,7 +20,6 @@
     <a href="/playground/Mayan" class=" inline flex-1 items-stretch <%=country==="Mayan" ? "font-extrabold" : ""%>"> 📜 <span class="hidden md:inline"> Mayan</span> </a>
     <a href="/playground/Bonus" class=" inline flex-1 items-stretch <%=country==="Bonus" ? "font-extrabold" : ""%>"> 🗝️ <span class="hidden md:inline"> Bonus</span> </a>
   </div> 
-
   <% if(falseAnswerSubmitted){ %>
     <div class="rounded-lg ring-4 ring-red-600 text-white font-black text-5xl flex justify-center m-5">
       <h1 class="p-5 ">
@@ -46,15 +45,17 @@
         <a href="/leaderboard"> <span class="hidden md:inline">Leader Board </span><i class="fa fa-trophy" aria-hidden="true"></i></a> <br>
         <a href="/"> <span class="hidden md:inline">Home Page</span><i class="fa fa-home" aria-hidden="true"></i></a><br>
         <a href="/logout"> <span class="hidden md:inline">LogOut</span><i class="fa fa-sign-out" aria-hidden="true"></i></a><br>
-        
       </div> 
       
       <div class="m-4 pt-10 text-xl overflow-y-auto self-start inline-block col-span-7 col-start-1 row-start-2 lg:col-span-5 lg:row-start-1 lg:col-start-2"> <!-- question  -->
         <span class="text-6xl p-1"> <%=country%> Question <%=questionNumber+1%> </span>
-        <p class="p-1"><%=questionContent%></p>
+        <p class="p-1">
+          The questions of greece are in the form of ancient scrolls.Click <a href="/greece" target="_blank" class="text-blue-500">here</a> to get your scroll.
+        </p>
         <form action="/playground/<%=country%>" method="post">
           <input type="text" name="response" required placeholder="Your Answer" class="p-2 mt-4 border rounded-lg focus:ring-4 ring-inset ring-green-600">
           <button type="submit" name="button" class="ml-5 m-1 pl-1 pr-1 p-1 bg-gray-600 rounded-lg text-grey-100 transition duration-500 ease-in-out hover:text-white hover:bg-green-700 transform hover:-translate-y-1 hover:scale-110">Submit</button>
+
         </form>
 
       </div>
@@ -80,7 +81,6 @@
           <% } %>
         
       </div>
-
 
       <div class="rounded-lg border-2">
         <% if(cardTwoStatus === 1){ %>

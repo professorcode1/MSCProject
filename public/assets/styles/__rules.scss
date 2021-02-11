@@ -1,0 +1,19 @@
+.rules {
+  padding-top: 5vh;
+  color: $light-grey;
+  font-family: "Happy Monkey", cursive;
+  .rules_heading {
+    size: 1.5rem;
+    padding-bottom: 2vh;
+  }
+  .rules_text {
+    .heading {
+      padding: 3vh 1.5vw;
+      size: 2 rem;
+    }
+    .text {
+      padding: 0 2vw;
+      font-weight: 200;
+    }
+  }
+}

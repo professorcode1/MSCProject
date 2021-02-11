@@ -8,13 +8,18 @@ const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const bcrypt = require("bcrypt");
+require('dotenv').config();
 const COUNTRIES = ["India", "UnitedKingdom", "Greece", "Egypt", "Mayan", "Bonus"];
 
-app.use(express.static("public"));
+
 app.set("view engine", "ejs");
+
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+app.use(express.static("public"));
+    
 app.use(session({
   secret: "IWntLCZxnk0nOpaHBjep",
   resave: false,
@@ -23,7 +28,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb://localhost:27017/MLSCScavengerHunt", {
+mongoose.connect("mongodb+srv://cluster0.tbblr.mongodb.net/MLSCScavengerHunt", {
+  auth:{
+    user: "admin-raghav",
+    password:encodeURIComponent(process.env.MONGOCLUSTERPASS)
+  },
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -213,7 +222,7 @@ const penaltyHintThree = 30;
 const marksPerQuestion = 100;
 const saltRounds = 8;
 const IndiaQuestions = [
-  "India Question One",
+  "India Question One     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   "India Question Two",
   "India Question Three",
   "India Question Four",
@@ -274,13 +283,7 @@ const hashedUnitedKingdomAnswers = [
   "$2b$08$X4NzhjpM9FFq/RCyygadDOtxGzS3tBe38aG3b6re0IUW9V8rUUCmq",
   "$2b$08$NRrCkaneEy6wxkiMuI2KbOO4P4YLD3Q8NZgxezWodhebmjMggHy4i"
 ];
-const GreeceQuestions = [
-  "Greece Question One",
-  "Greece Question Two",
-  "Greece Question Three",
-  "Greece Question Four",
-  "Greece Question Five"
-];
+
 const GreeceHints = [
   "Hint 1 of Question 1 of Greece",
   "Hint 2 of Question 1 of Greece",
@@ -386,13 +389,14 @@ const hashedBonusAnswers = [
   "$2b$08$WxJywa4d/TKsJG2mUuLYe.jr1FJOJnhBzTV3Wbbj5lFwDlH6UNb3C",
 ];
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/homepage.html");
-});
+app.get("/", (req, res) => res.sendFile(__dirname + "/webPages/index.html"));
+app.get("/society", (req, res) => res.sendFile(__dirname + "/webPages/Society.html"));
+app.get("/event", (req, res) => res.sendFile(__dirname + "/webPages/Event.html"));
+app.get("/rules", (req, res) => res.sendFile(__dirname + "/webPages/Rules.html"));
+app.get("/prizes", (req, res) => res.sendFile(__dirname + "/webPages/Prizes.html"));
 
-app.get("/login", (req, res) => {
-  res.sendFile(__dirname + "/public/login.html");
-});
+
+
 app.post("/login", function (req, res) {
   const user = new User({
     username: req.body.username,
@@ -410,9 +414,6 @@ app.post("/login", function (req, res) {
   });
 });
 
-app.get("/register", (req, res) => {
-  res.sendFile(__dirname + "/public/register.html");
-});
 app.post("/register", (req, res) => {
   User.exists({
     username: req.body.username
@@ -442,7 +443,7 @@ app.post("/register", (req, res) => {
           });
         } else {
           console.log(err);
-          res.redirect("/login");
+          res.redirect("/");
         }
       });
     }
@@ -454,16 +455,17 @@ app.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-app.get("/playground", (req, res) => {
-  if (req.isAuthenticated()) {
-    if (!req.user.bonusQuestionsVisible)
-      return res.sendFile(__dirname + "/public/playGround.html");
-    else
-      return res.sendFile(__dirname + "/public/playGroundBonus.html");
+app.get("/playground", (req, res) => res.redirect("/playground/India"));
+
+app.get("/greece",(req,res) => {
+  if(req.isAuthenticated())
+  {
+    res.sendFile(__dirname+"/webPages/greeceScroll"+req.user.GreeceQuestionsSolved+".png");
+  }else{
+    res.redirect("/");
   }
-  else
-    return res.redirect("/login");
 });
+
 app.get("/playground/:country", (req, res) => {
   //state can be "falseAnswerSubmitted" which que's us to tell the user he submitted a false answer,
   //state can be "correctAnswerSubmitted" which que's us to tell the user he submitted the correct answer,
@@ -475,7 +477,7 @@ app.get("/playground/:country", (req, res) => {
       return res.render("message", { message: "Plase solve all 5 questions from all 5 countries before trying to access bonus questions." });
 
     if (req.user[req.params.country + "QuestionsSolved"] == (req.params.country === "Bonus" ? 7 : 5))
-      return res.sendFile(__dirname + "/public/countryCompleted.html");
+    return res.render("message", { message: "You have solved all questions from "+ req.params.country});
 
     if (req.params.country === "India") {
 
@@ -498,6 +500,7 @@ app.get("/playground/:country", (req, res) => {
         falseAnswerSubmitted: (req.query.falseAnswerSubmitted ? true : false),
         correctAnswerSubmitted: (req.query.correctAnswerSubmitted ? true : false),
         questionContent: IndiaQuestions[req.user.IndiaQuestionsSolved],
+        questionNumber:req.user.IndiaQuestionsSolved,
         cooldownViolated: (req.query.cooldownViolated ? true : false),
         cardOneStatus: cardOneStatus,
         cardTwoStatus: cardTwoStatus,
@@ -526,6 +529,7 @@ app.get("/playground/:country", (req, res) => {
         falseAnswerSubmitted: (req.query.falseAnswerSubmitted ? true : false),
         correctAnswerSubmitted: (req.query.correctAnswerSubmitted ? true : false),
         questionContent: UnitedKingdomQuestions[req.user.UnitedKingdomQuestionsSolved],
+        questionNumber:req.user.UnitedKingdomQuestionsSolved,
         cooldownViolated: (req.query.cooldownViolated ? true : false),
         cardOneStatus: cardOneStatus,
         cardTwoStatus: cardTwoStatus,
@@ -545,14 +549,14 @@ app.get("/playground/:country", (req, res) => {
           cardThreeStatus = 2;
         }
       }
-      return res.render("playground", {
+      return res.render("greece", {
         hint1: req.user.GreeceHints[req.user.GreeceQuestionsSolved * 3] ? GreeceHints[req.user.GreeceQuestionsSolved * 3] : "",
         hint2: req.user.GreeceHints[req.user.GreeceQuestionsSolved * 3 + 1] ? GreeceHints[req.user.GreeceQuestionsSolved * 3 + 1] : "",
         hint3: req.user.GreeceHints[req.user.GreeceQuestionsSolved * 3 + 2] ? GreeceHints[req.user.GreeceQuestionsSolved * 3 + 2] : "",
         falseAnswerSubmitted: (req.query.falseAnswerSubmitted ? true : false),
         correctAnswerSubmitted: (req.query.correctAnswerSubmitted ? true : false),
-        questionContent: GreeceQuestions[req.user.GreeceQuestionsSolved],
         cooldownViolated: (req.query.cooldownViolated ? true : false),
+        questionNumber:req.user.GreeceQuestionsSolved,
         cardOneStatus: cardOneStatus,
         cardTwoStatus: cardTwoStatus,
         cardThreeStatus: cardThreeStatus,
@@ -578,6 +582,7 @@ app.get("/playground/:country", (req, res) => {
         falseAnswerSubmitted: (req.query.falseAnswerSubmitted ? true : false),
         correctAnswerSubmitted: (req.query.correctAnswerSubmitted ? true : false),
         questionContent: EgyptQuestions[req.user.EgyptQuestionsSolved],
+        questionNumber:req.user.EgyptQuestionsSolved,
         cooldownViolated: (req.query.cooldownViolated ? true : false),
         cardOneStatus: cardOneStatus,
         cardTwoStatus: cardTwoStatus,
@@ -604,6 +609,7 @@ app.get("/playground/:country", (req, res) => {
         falseAnswerSubmitted: (req.query.falseAnswerSubmitted ? true : false),
         correctAnswerSubmitted: (req.query.correctAnswerSubmitted ? true : false),
         questionContent: MayanQuestions[req.user.MayanQuestionsSolved],
+        questionNumber:req.user.MayanQuestionsSolved,
         cooldownViolated: (req.query.cooldownViolated ? true : false),
         cardOneStatus: cardOneStatus,
         cardTwoStatus: cardTwoStatus,
@@ -616,6 +622,7 @@ app.get("/playground/:country", (req, res) => {
         falseAnswerSubmitted: (req.query.falseAnswerSubmitted ? true : false),
         correctAnswerSubmitted: (req.query.correctAnswerSubmitted ? true : false),
         questionContent: BonusQuestions[req.user.bonusQuestionsSolved],
+        questionNumber:req.user.bonusQuestionsSolved,
         cooldownViolated: (req.query.cooldownViolated ? true : false),
         country: "Bonus"
       });
@@ -624,7 +631,7 @@ app.get("/playground/:country", (req, res) => {
       return res.redirect("/playground");
   }
   else
-    res.redirect("/login");
+    res.redirect("/");
 });
 
 app.post("/playground/:country", async (req, res) => {
@@ -791,17 +798,17 @@ app.post("/playground/:country", async (req, res) => {
 
     return res.redirect("/playground/" + req.params.country + "/?" + (answerCorrectness ? "correctAnswerSubmitted=true" : "falseAnswerSubmitted=true"));
   } else {
-    res.redirect("/login");
+    res.redirect("/");
   }
 });
 
 app.get("/admin", (req, res) => {
   if (req.isAuthenticated()) {
     if (req.user.adminPrivilege) {
-      User.find((err, user) => {
+      User.find((err, users) => {
         if (!err) {
           res.render("admin", {
-            teams: user
+            teams: users
           });
         } else {
           console.log(err);
@@ -811,7 +818,7 @@ app.get("/admin", (req, res) => {
       res.redirect("/playground");
     }
   } else {
-    res.redirect("/login");
+    res.redirect("/");
   }
 });
 
@@ -830,82 +837,17 @@ app.get("/teamanswerhistory", async (req, res) => {
       for (const id of teamAnswerIds)
         answers.push(await Answer.findById(id));
 
-        answers.reverse();
+      answers.reverse();
 
-      return res.render("teamanswerhistory",{answers:answers});
+      return res.render("teamanswerhistory", { answers: answers });
     } else {
       return res.redirect("/playground");
     }
   } else {
-    return res.redirect("/login");
+    return res.redirect("/");
   }
 });
 
-// app.get("/systemstatecheck", (req, res) => {
-//   //the function checks for data tampering and data corruption
-//   if (req.isAuthenticated()) {
-//     if (req.user.adminPrivilege) {
-//       (async () => {
-//         const allAnswers = await Answer.find();
-//         const allUsers = await User.find();
-//         let message = "";
-//         //making sure all answers in the answers database map to a user
-//         for (const answer of allAnswers) {
-//           const user = await User.findById(answer.team);
-//           if (!(user.answersArray.includes(answer._id))) {
-//             message += "Issu detected : The following answer does not show up in the team's history it belongs to.<br>" + answer + "<br>";
-//           }
-//         }
-
-//         for (const user of allUsers) {
-//           if (user.adminPrivilege) {
-//             continue;
-//           }
-//           for (const answerId of user.answersArray) {
-//             if (!(await Answer.exists({
-//               _id: answerId
-//             }))) {
-//               message += "Issue Detected: The following user has an answer that doesn't exist in the answer database.<br>";
-//               message += user.username + "<br>";
-//             }
-//           }
-//           let negativeMarking = 0;
-//           for (let hintItrt = 0; hintItrt < 25; hintItrt++) {
-//             let a = user.hintTaken[3 * hintItrt],
-//               b = user.hintTaken[3 * hintItrt + 1],
-//               c = user.hintTaken[3 * hintItrt + 2];
-//             if (((!b) && c) || ((!a) && b)) {
-//               message += "Issue detected : The following user has hint's for a question unlocked in the wrong order.<br>";
-//               message += user.username + "<br>hintindex" + String(3 * hintItrt);
-//             }
-//             if (a) {
-//               negativeMarking += penaltyHintOne;
-//             }
-//             if (b) {
-//               negativeMarking += penaltyHintTwo;
-//             }
-//             if (c) {
-//               negativeMarking += penaltyHintThree;
-//             }
-//           }
-//           if (user.score !== (100 * (user.currentQuestion - 1)) - negativeMarking) {
-//             message += "Issue detected : The following users score is askew.<br>" + user.username + ", expected score:," + String((100 * (user.currentQuestion - 1)) - negativeMarking);
-//             message += "score:" + String(user.score) + "<br>";
-//           }
-//         }
-//         res.render("message", {
-//           message: message
-//         });
-//       })(); //Using a Immediately Invoked Function Expression(IIFE) as setting it to async allows mongoodb to act inside as if it returns objects instead of promises
-//       //and helps me avoide writing many .then functions as everything can be done from the same control flow
-//       return;
-//     } else {
-//       return res.redirect("/playground");
-//     }
-//   } else {
-//     return res.redirect("/login");
-//   }
-// });
 
 app.get("/leaderboard", (req, res) => {
   if (req.isAuthenticated()) {
@@ -921,7 +863,7 @@ app.get("/leaderboard", (req, res) => {
     })(); //Using a Immediately Invoked Function Expression(IIFE) as setting it to async allows mongoodb to act inside as if it returns objects instead of promises
     //and helps me avoide writing many .then functions as everything can be done from the same control flow
   } else {
-    return res.redirect("/login");
+    return res.redirect("/");
   }
 });
 
@@ -1067,7 +1009,7 @@ app.get("/gethint/:country", (req, res) => {
       return res.redirect("/playground");
   }
   else
-    res.redirect("/login");
+    res.redirect("/");
 });
 
 //below is enviornment code
