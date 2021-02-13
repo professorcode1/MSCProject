@@ -1,42 +1,42 @@
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
 <head>
-  <meta charset="utf-8">
-  <title>Playground</title>
-  <link rel="stylesheet" href="/css/stylesTW.css">
+    <meta charset="utf-8">
+    <title>Playground</title>
+    <link rel="stylesheet" href="/css/stylesTW.css">
+    <link rel="shortcut icon" type="image/jpg" href="./assets/img/mlsc_logo.png" />
 
-<script src="https://use.fontawesome.com/688dfff0c7.js"></script>
+    <script src="https://use.fontawesome.com/688dfff0c7.js"></script>
 
 </head>
 
 <body class="text-gray-400 text-xl " style="background-color:#202020;">
-  <div class="flex sm:pl-28 m-5  "> 
-    <a href="/playground/India" class=" inline flex-1 items-stretch <%=country==="India" ? "font-extrabold" : ""%>"> 🇮🇳 <span class="hidden md:inline"> India</span>  </a>
-    <a href="/playground/UnitedKingdom" class=" inline flex-1 items-stretch <%=country==="UnitedKingdom" ? "font-extrabold" : ""%>"> 🇬🇧 <span class="hidden md:inline"> UK </span> </a>
-    <a href="/playground/Greece" class=" inline flex-1 items-stretch <%=country==="Greece" ? "font-extrabold" : ""%>"> 🇬🇷 <span class="hidden md:inline"> Greece</span> </a>
-    <a href="/playground/Egypt" class=" inline flex-1 items-stretch <%=country==="Egypt" ? "font-extrabold" : ""%>"> 🇪🇬 <span class="hidden md:inline"> Egypt</span></a>
-    <a href="/playground/Mayan" class=" inline flex-1 items-stretch <%=country==="Mayan" ? "font-extrabold" : ""%>"> 📜 <span class="hidden md:inline"> Mayan</span> </a>
-    <a href="/playground/Bonus" class=" inline flex-1 items-stretch <%=country==="Bonus" ? "font-extrabold" : ""%>"> 🗝️ <span class="hidden md:inline"> Bonus</span> </a>
-  </div> 
-  <% if(falseAnswerSubmitted){ %>
+    <div class="flex sm:pl-28 m-5  ">
+        <a href="/playground/India" class=" inline flex-1 items-stretch <%=country==="India" ? "font-extrabold" : ""%>"> 🇮🇳 <span class="hidden md:inline"> India</span> </a>
+        <a href="/playground/UnitedKingdom" class=" inline flex-1 items-stretch <%=country==="UnitedKingdom" ? "font-extrabold" : ""%>"> 🇬🇧 <span class="hidden md:inline"> UK </span> </a>
+        <a href="/playground/Greece" class=" inline flex-1 items-stretch <%=country==="Greece" ? "font-extrabold" : ""%>"> 🇬🇷 <span class="hidden md:inline"> Greece</span> </a>
+        <a href="/playground/Egypt" class=" inline flex-1 items-stretch <%=country==="Egypt" ? "font-extrabold" : ""%>"> 🇪🇬 <span class="hidden md:inline"> Egypt</span></a>
+        <a href="/playground/Mayan" class=" inline flex-1 items-stretch <%=country==="Mayan" ? "font-extrabold" : ""%>"> 📜 <span class="hidden md:inline"> Mayan</span> </a>
+        <a href="/playground/Bonus" class=" inline flex-1 items-stretch <%=country==="Bonus" ? "font-extrabold" : ""%>"> 🗝️ <span class="hidden md:inline"> Stage 2</span> </a>
+    </div>
+    <% if(falseAnswerSubmitted){ %>
     <div class="rounded-lg ring-4 ring-red-600 text-white font-black text-5xl flex justify-center m-5">
-      <h1 class="p-5 ">
-        Wrong Answer
-      </h1>
+        <h1 class="p-5 ">
+            Wrong Answer
+        </h1>
     </div>
     <%}%>
       <% if(correctAnswerSubmitted){ %>
     <div class="rounded-lg ring-4 ring-green-600 text-white font-black text-5xl flex justify-center m-5">
-      <h1 class="p-5">
-        Right answer
-      </h1>
+        <h1 class="p-5">
+            Right answer
+        </h1>
     </div>
     <%}%>
       <% if(cooldownViolated){%>
     <div class="rounded-lg ring-4  text-white font-black text-2xl flex justify-center m-5">
-      <h1 class="p-5">Cooldown period violated. Please wait 2 seconds before resubmitting an answer.</h1>
+        <h1 class="p-5">Cooldown period violated. Please wait 2 seconds before resubmitting an answer.</h1>
     </div>
     <%}%>
 
@@ -49,74 +49,75 @@
       
       <div class="m-4 pt-10 text-xl overflow-y-auto self-start inline-block col-span-7 col-start-1 row-start-2 lg:col-span-5 lg:row-start-1 lg:col-start-2"> <!-- question  -->
         <span class="text-6xl p-1"> <%=country%> Question <%=questionNumber+1%> </span>
-        <p class="p-1">
-          The questions of greece are in the form of ancient scrolls.Click <a href="/greece" target="_blank" class="text-blue-500">here</a> to get your scroll.
-        </p>
-        <form action="/playground/<%=country%>" method="post">
-          <input type="text" name="response" required placeholder="Your Answer" class="p-2 mt-4 border rounded-lg focus:ring-4 ring-inset ring-green-600">
-          <button type="submit" name="button" class="ml-5 m-1 pl-1 pr-1 p-1 bg-gray-600 rounded-lg text-grey-100 transition duration-500 ease-in-out hover:text-white hover:bg-green-700 transform hover:-translate-y-1 hover:scale-110">Submit</button>
+    <p class="p-1">
+        The questions of greece are in the form of ancient scrolls.Click <a href="/greece" target="_blank" class="text-blue-500">here</a> to get your scroll.
+    </p>
+    <form action="/playground/<%=country%>" method="post">
+        <input type="text" name="response" required placeholder="Your Answer" class="p-2 mt-4 border rounded-lg focus:ring-4 ring-inset ring-green-600">
+        <button type="submit" name="button" class="ml-5 m-1 pl-1 pr-1 p-1 bg-gray-600 rounded-lg text-grey-100 transition duration-500 ease-in-out hover:text-white hover:bg-green-700 transform hover:-translate-y-1 hover:scale-110">Submit</button>
 
-        </form>
+    </form>
 
-      </div>
+    </div>
 
-      <div class="m-4 inline-block col-span-6 col-start-2 row-start-1 lg:col-span-1  lg:col-start-7 space-y-1 lg:space-y-5"><!-- hints -->
-              <!-- the below code will deal with the cards that display hint -->
-      <!-- a card status of 1 reflects that card is locked, 2 reflects card is asking "are you sure", 3 reflects card is unlocked -->
-      <div class="rounded-lg border-2">
-        <% if(cardOneStatus === 1){ %>
-          <div>
-            <a href="/playground/<%=country%>/?showConfirmationCard=true"> <span class="hidden md:inline"> Locked Hint</span> 1 <i class="fa fa-lock" aria-hidden="true"></i></a>
-          </div>
-          <% }else if(cardOneStatus === 2){ %>
-          <div>
-             <span class="hidden md:inline"> Are you sure. <br> This will cost you 10 points. <br></span><i class="fa fa-unlock" aria-hidden="true"></i>?
-           
-            <a href="/gethint/<%=country%>"> Yes </a> <a href="/playground/<%=country%>">No</a>
-          </div>
-          <% }else if(cardOneStatus === 3){ %>
+    <div class="m-4 inline-block col-span-6 col-start-2 row-start-1 lg:col-span-1  lg:col-start-7 space-y-1 lg:space-y-5">
+        <!-- hints -->
+        <!-- the below code will deal with the cards that display hint -->
+        <!-- a card status of 1 reflects that card is locked, 2 reflects card is asking "are you sure", 3 reflects card is unlocked -->
+        <div class="rounded-lg border-2">
+            <% if(cardOneStatus === 1){ %>
+            <div>
+                <a href="/playground/<%=country%>/?showConfirmationCard=true"> <span class="hidden md:inline"> Locked Hint</span> 1 <i class="fa fa-lock" aria-hidden="true"></i></a>
+            </div>
+            <% }else if(cardOneStatus === 2){ %>
+            <div>
+                <span class="hidden md:inline"> Are you sure. <br> This will cost you 10 points. <br></span><i class="fa fa-unlock" aria-hidden="true"></i>?
+
+                <a href="/gethint/<%=country%>"> Yes </a> <a href="/playground/<%=country%>">No</a>
+            </div>
+            <% }else if(cardOneStatus === 3){ %>
             <div class="overflow-y-auto">
                 <%=hint1%>
             </div>
-          <% } %>
-        
-      </div>
+            <% } %>
 
-      <div class="rounded-lg border-2">
-        <% if(cardTwoStatus === 1){ %>
-          <div>
-            <a href="/playground/<%=country%>/?showConfirmationCard=true"><span class="hidden md:inline"> Locked Hint</span> 2 <i class="fa fa-lock" aria-hidden="true"></i></a>
-          </div>
-          <% }else if(cardTwoStatus === 2){ %>
+        </div>
+
+        <div class="rounded-lg border-2">
+            <% if(cardTwoStatus === 1){ %>
             <div>
-              <span class="hidden md:inline">Are you sure. <br> This will cost you 20 points.<br></span><i class="fa fa-unlock" aria-hidden="true"></i>?
-              <a href="/gethint/<%=country%>"> Yes </a> <a href="/playground/<%=country%>">No</a>
+                <a href="/playground/<%=country%>/?showConfirmationCard=true"><span class="hidden md:inline"> Locked Hint</span> 2 <i class="fa fa-lock" aria-hidden="true"></i></a>
             </div>
-          <% }else if(cardTwoStatus === 3){ %>
+            <% }else if(cardTwoStatus === 2){ %>
+            <div>
+                <span class="hidden md:inline">Are you sure. <br> This will cost you 20 points.<br></span><i class="fa fa-unlock" aria-hidden="true"></i>?
+                <a href="/gethint/<%=country%>"> Yes </a> <a href="/playground/<%=country%>">No</a>
+            </div>
+            <% }else if(cardTwoStatus === 3){ %>
             <div class="overflow-y-auto">
-              <%=hint2%>
+                <%=hint2%>
             </div>
-          <% } %>
-      </div>
+            <% } %>
+        </div>
 
-      <div class="rounded-lg border-2">
-        <% if(cardThreeStatus === 1){ %>
-          <div>
-            <a href="/playground/<%=country%>/?showConfirmationCard=true"><span class="hidden md:inline"> Locked Hint</span> 3 <i class="fa fa-lock" aria-hidden="true"></i></a>
-          </div>
-          <% }else if(cardThreeStatus === 2){ %>
+        <div class="rounded-lg border-2">
+            <% if(cardThreeStatus === 1){ %>
             <div>
-              <span class="hidden md:inline">Are you sure. <br> This will cost you 30 points.<br></span><i class="fa fa-unlock" aria-hidden="true"></i>?
-              <a href="/gethint/<%=country%>"> Yes </a> <a href="/playground/<%=country%>">No</a>
+                <a href="/playground/<%=country%>/?showConfirmationCard=true"><span class="hidden md:inline"> Locked Hint</span> 3 <i class="fa fa-lock" aria-hidden="true"></i></a>
             </div>
-          <% }else if(cardThreeStatus=== 3){ %>
+            <% }else if(cardThreeStatus === 2){ %>
+            <div>
+                <span class="hidden md:inline">Are you sure. <br> This will cost you 30 points.<br></span><i class="fa fa-unlock" aria-hidden="true"></i>?
+                <a href="/gethint/<%=country%>"> Yes </a> <a href="/playground/<%=country%>">No</a>
+            </div>
+            <% }else if(cardThreeStatus=== 3){ %>
             <div class="overflow-y-scroll">
                 <%=hint3%>
             </div>
-          <% } %>
-      </div>
+            <% } %>
+        </div>
         <!-- hint card code ends here -->
-      </div>
+    </div>
     </div>
 </body>
 

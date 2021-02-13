@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <title>Leader Board</title>
     <link rel="stylesheet" href="/css/stylesTW.css">
-  </head>
-  <body class="text-gray-400 text-xl " style="background-color:#202020;">
-    <div class="lg:m-40 border-2 border-white rounded-lg">
-      <span class="text-5xl block">Leader Board</span>
-      <span class="block">Click <a href="/playground" class="text-blue-500">here</a> to go back to playground</span>
+    <link rel="shortcut icon" type="image/jpg" href="./assets/img/mlsc_logo.png" />
 
-      <div class="grid grid-cols-2 mt-10">
-        <div class="font-black">Team</div>
-        <div class="font-black">Score</div>
-        <%for(const team of board){%>
-          <div class="pb-1"><%=team.username%></div>
-          <div class="pb-1"><%=team.score%></div> 
-        <%}%>
+</head>
+
+<body class="text-gray-400 text-xl " style="background-color:#202020;">
+    <div class="lg:m-40 border-2 border-white rounded-lg">
+        <span class="text-5xl block">Leader Board</span>
+        <span class="block">Click <a href="/playground" class="text-blue-500">here</a> to go back to playground</span>
+
+        <div class="grid grid-cols-2 mt-10">
+            <div class="font-black">Team</div>
+            <div class="font-black">Score</div>
+            <%for(const team of board){%>
+            <div class="pb-1"><%=team.username%></div>
+            <div class="pb-1"><%=team.score%></div>
+            <%}%>
       </div>
     
     </div>

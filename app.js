@@ -480,7 +480,7 @@ app.get("/playground/:country", (req, res) => {
         // a card status of 1 reflects that card is locked, 2 reflects card is asking "are you sure", 3 reflects card is unlocked
         if (req.params.country === "Bonus" && !req.user.bonusQuestionsVisible)
             return res.render("message", {
-                message: "Plase solve all 5 questions from all 5 countries before trying to access bonus questions."
+                message: "Plase solve all 5 questions from all 5 countries before trying to access stage 2 questions."
             });
 
         if (req.user[req.params.country + "QuestionsSolved"] == (req.params.country === "Bonus" ? 7 : 5))

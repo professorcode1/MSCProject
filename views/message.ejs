@@ -2,42 +2,46 @@
 <html lang="en" dir="ltr">
 
 <head>
-  <meta charset="utf-8">
-  <title>Playground</title>
-  <link rel="stylesheet" href="/css/stylesTW.css">
+    <meta charset="utf-8">
+    <title>Playground</title>
+    <link rel="stylesheet" href="/css/stylesTW.css">
+    <link rel="shortcut icon" type="image/jpg" href="./assets/img/mlsc_logo.png" />
 
-<script src="https://use.fontawesome.com/688dfff0c7.js"></script>
+
+    <script src="https://use.fontawesome.com/688dfff0c7.js"></script>
 
 </head>
 
 <body class="text-gray-400 text-xl " style="background-color:#202020;">
 
-  <div class="flex sm:pl-28 m-5  "> 
-    <a href="/playground/India" class=" inline flex-1 items-stretch"> 🇮🇳 <span class="hidden md:inline"> India</span>  </a>
-    <a href="/playground/UnitedKingdom" class=" inline flex-1 items-stretch"> 🇬🇧 <span class="hidden md:inline"> UK </span> </a>
-    <a href="/playground/Greece" class=" inline flex-1 items-stretch"> 🇬🇷 <span class="hidden md:inline"> Greece</span> </a>
-    <a href="/playground/Egypt" class=" inline flex-1 items-stretch"> 🇪🇬 <span class="hidden md:inline"> Egypt</span></a>
-    <a href="/playground/Mayan" class=" inline flex-1 items-stretch"> 📜 <span class="hidden md:inline"> Mayan</span> </a>
-    <a href="/playground/Bonus" class=" inline flex-1 items-stretch"> 🗝️ <span class="hidden md:inline"> Bonus</span> </a>
-  </div> 
+    <div class="flex sm:pl-28 m-5  ">
+        <a href="/playground/India" class=" inline flex-1 items-stretch"> 🇮🇳 <span class="hidden md:inline"> India</span> </a>
+        <a href="/playground/UnitedKingdom" class=" inline flex-1 items-stretch"> 🇬🇧 <span class="hidden md:inline"> UK </span> </a>
+        <a href="/playground/Greece" class=" inline flex-1 items-stretch"> 🇬🇷 <span class="hidden md:inline"> Greece</span> </a>
+        <a href="/playground/Egypt" class=" inline flex-1 items-stretch"> 🇪🇬 <span class="hidden md:inline"> Egypt</span></a>
+        <a href="/playground/Mayan" class=" inline flex-1 items-stretch"> 📜 <span class="hidden md:inline"> Mayan</span> </a>
+        <a href="/playground/Bonus" class=" inline flex-1 items-stretch"> 🗝️ <span class="hidden md:inline"> Stage 2</span> </a>
+    </div>
 
 
 
     <div class="grid grid-cols-7  items-center p-5 ">
-      <div class="m-4 inline-block col-span-1 col-start-1 row-start-1 space-y-5 lg:space-y-20"> <!-- left navbar -->
-        <a href="/leaderboard"> <span class="hidden md:inline">Leader Board </span><i class="fa fa-trophy" aria-hidden="true"></i></a> <br>
-        <a href="/"> <span class="hidden md:inline">Home Page</span><i class="fa fa-home" aria-hidden="true"></i></a><br>
-        <a href="/logout"> <span class="hidden md:inline">LogOut</span><i class="fa fa-sign-out" aria-hidden="true"></i></a><br>
-      </div> 
-      
-      <div class="m-4 inline-block col-span-6 col-start-2 row-start-1  space-y-1  lg:col-span-5 lg:row-start-1 lg:col-start-2 text-3xl"> <!-- question  -->
-        <br>
-        <div class="animate-pulse border border-light-blue-300 rounded-md p-4 ">
-          <%=message%>
+        <div class="m-4 inline-block col-span-1 col-start-1 row-start-1 space-y-5 lg:space-y-20">
+            <!-- left navbar -->
+            <a href="/leaderboard"> <span class="hidden md:inline">Leader Board </span><i class="fa fa-trophy" aria-hidden="true"></i></a> <br>
+            <a href="/"> <span class="hidden md:inline">Home Page</span><i class="fa fa-home" aria-hidden="true"></i></a><br>
+            <a href="/logout"> <span class="hidden md:inline">LogOut</span><i class="fa fa-sign-out" aria-hidden="true"></i></a><br>
         </div>
-      </div>
 
-  
+        <div class="m-4 inline-block col-span-6 col-start-2 row-start-1  space-y-1  lg:col-span-5 lg:row-start-1 lg:col-start-2 text-3xl">
+            <!-- question  -->
+            <br>
+            <div class="animate-pulse border border-light-blue-300 rounded-md p-4 ">
+                <%=message%>
+            </div>
+        </div>
+
+
     </div>
 </body>
 
