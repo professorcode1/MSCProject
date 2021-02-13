@@ -1,0 +1,130 @@
+@import "login";
+
+@font-face {
+  font-family: "BLKCHCRY";
+  src: url("../fonts/BLKCHCRY.ttf");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// .hide {
+//   display: none !important;
+// }
+
+.que,
+label,
+select,
+option {
+  color: #483223 !important;
+}
+
+h1 {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+#myVideo {
+  z-index: -2;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-height: 100%;
+  min-width: 100%;
+}
+
+button {
+  min-height: 1em;
+  display: inline-block;
+  font-size: 1rem;
+  float: right;
+  color: white;
+  margin-left: 0;
+  margin-right: 0.25em;
+  cursor: pointer;
+  background: #483223;
+  min-height: 1em;
+  padding: 0.78571429em 1.5em 0.78571429em;
+  border-radius: 0.28571429rem;
+  border: none;
+  outline: none;
+  font-weight: 700;
+}
+
+.ui.right.floated.submit.button {
+  color: white;
+  background: #483223 !important;
+}
+
+input {
+  background: transparent !important;
+  border-bottom: solid 1px #483223 !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+
+  padding-bottom: 1rem !important;
+}
+
+.img {
+  position: absolute;
+  #bg {
+    height: 100vh;
+    width: 100vw;
+    opacity: 0.4 !important;
+    z-index: -1;
+  }
+  #bg-note {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.ui.dividing.header {
+  color: #483223;
+  text-align: center;
+  font-size: 3rem;
+  letter-spacing: 0.1rem;
+  line-height: 1rem;
+  padding: 1em 0;
+  font-family: "BLKCHCRY";
+}
+#fullpage {
+  .section {
+    .fp-tableCell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .que {
+      width: 30vw;
+      padding: 3rem;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 0.9rem;
+      .field label {
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  .slideTwo {
+    .membersCount {
+      padding: 1rem 0;
+    }
+  }
+
+  .fp-controlArrow.fp-next {
+    border-color: transparent transparent transparent #483223;
+    opacity: 0.5;
+  }
+  .fp-controlArrow.fp-prev {
+    border-color: transparent #483223 transparent transparent;
+    opacity: 0.5;
+  }
+}

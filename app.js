@@ -399,6 +399,7 @@ app.get("/loginFailed", (req, res) => res.render("message", {
 }));
 
 
+app.get("/login", (req, res) => res.sendFile(__dirname + "/webPages/login.html"));
 app.post("/login", function(req, res) {
     const user = new User({
         username: req.body.username,
@@ -418,6 +419,7 @@ app.post("/login", function(req, res) {
     });
 });
 
+app.get("/register", (req, res) => res.sendFile(__dirname + "/webPages/register.html"));
 app.post("/register", (req, res) => {
     User.exists({
         username: req.body.username

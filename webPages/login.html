@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventures-Login</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href=".\assetsLogReg\styles\semantic.min.css">
+    <link rel="stylesheet" href=".\assetsLogReg\styles\form.css">
+
+
+</head>
+
+<body>
+    <video autoplay muted loop id="myVideo" preload="auto">
+        <source src=".\assetsLogReg\videos\Maps_India.webm" type="video/webm">
+    </video>
+    <div class="img">
+        <img id='bg' src=".\assetsLogReg\imgs\grunge-style-canvas-texture-background-with-splats-stains.jpg" alt="">
+        <!-- <img id='bg-note' src=".\assetsLogReg\imgs\Aged-Paper-Texture-For-Photoshop.jpg" alt="">         -->
+    </div>
+    <form action="/login" method="POST">
+        <div class="sec_Login">
+            <div class="que">
+                <h4 class="ui dividing header">Login lads</h4>
+                <div class="ui form error">
+                    <div class="field">
+                        <label>Team Name:</label>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div class="field">
+                        <label>Password:</label>
+                        <input type="password" name="password" required>
+                    </div>
+                    <!-- <div class="ui error message" style="display: none;">
+                            <div class="header">Action Forbidden</div>
+                            <p>You can only sign up for an account once with a given e-mail address.</p>
+                        </div> -->
+                    <button type="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src=".\assetsLogReg\scripts\semantic.min.js"></script>
+</body>
+
+</html>

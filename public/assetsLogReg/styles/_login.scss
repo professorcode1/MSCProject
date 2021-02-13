@@ -1,0 +1,40 @@
+body {
+  overflow: hidden;
+}
+
+form .sec_Login {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .que {
+    min-width: 40vw;
+    padding: 3rem;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 0.9rem;
+    .field label {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  form .sec_Login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .que {
+      width: 80vw;
+      padding: 8vw;
+      .ui.dividing.header {
+        letter-spacing: 0.5vw;
+        font-size: 7vw;
+      }
+      .field label {
+        font-size: 2.5vw;
+      }
+    }
+  }
+}
