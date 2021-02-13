@@ -56,7 +56,7 @@ let overlayTL_1 = gsap.timeline({
 });
 
 
-if (check == true) {
+if (check) {
     console.log("cookie found");
 } else {
     words.forEach(tlChange);
