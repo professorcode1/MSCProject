@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.rt-disc {
+  height: 100vh;
+  width: 100vw;
+  background-color: #032d30;
+  margin: auto;
+}
+
+.rt-disc .svg-rings #ring1 {
+  position: absolute;
+  left: 100px;
+}
+
+.rt-disc .svg-rings #ring2 {
+  position: absolute;
+  top: 61px;
+  left: 161px;
+}
+
+.rt-disc .svg-rings #ring3 {
+  position: absolute;
+  top: 126px;
+  left: 227px;
+}
+
+.rt-disc .svg-rings #ring4 {
+  position: absolute;
+  top: 191px;
+  left: 291px;
+}
+
+.rt-disc .svg-rings #ring5 {
+  position: absolute;
+  top: 235px;
+  left: 335px;
+}
+/*# sourceMappingURL=rtdisc.css.map */
