@@ -285,28 +285,28 @@ const hashedUnitedKingdomAnswers = [
 ];
 
 const GreeceHints = [
-    "Hint 1 of Question 1 of Greece",
-    "Hint 2 of Question 1 of Greece",
-    "Hint 3 of Question 1 of Greece",
-    "Hint 1 of Question 2 of Greece",
-    "Hint 2 of Question 2 of Greece",
-    "Hint 3 of Question 2 of Greece",
-    "Hint 1 of Question 3 of Greece",
-    "Hint 2 of Question 3 of Greece",
-    "Hint 3 of Question 3 of Greece",
-    "Hint 1 of Question 4 of Greece",
-    "Hint 2 of Question 4 of Greece",
-    "Hint 3 of Question 4 of Greece",
-    "Hint 1 of Question 5 of Greece",
-    "Hint 2 of Question 5 of Greece",
-    "Hint 3 of Question 5 of Greece",
+    "a patterned ring",
+    "atlantic ocean",
+    "island of atlas",
+    "voyager 2 space mission's last flyby",
+    "greek,frenc,german,english",
+    "levante voiture",
+    "secret message passing",
+    "sequence matters",
+    "decoding is reverse of encoding",
+    "num%10 gives the last digit of the number",
+    "euclidean gcd algorithm",
+    "first digit of answer is 2",
+    "there were 12",
+    "athens 1896",
+    "maybe the answer lies in who poseidon really was",
 ];
 const hashedGreeceAnswers = [
-    "$2b$08$m8nVnJ3/6CdoM9K1Jss7i.GRcbSsVj/4nZr6huv1FAwyEEhA6dD7u",
-    "$2b$08$XIJiLMuM6rxW/s9snJfM.eFP/xDj.K5dJrf8WEKX7Ha/dNA7MMDeC",
-    "$2b$08$ZcFScIf8cjNunqLpq8FfZed0Se2QDm4ncqj6qIpOsf.mqNa3sHJga",
-    "$2b$08$deKtqgQRx5Bq1OrD6w6a8eFk7ofRXkns1Yxruhy54X6kx.U4JEBwK",
-    "$2b$08$h90fzgErtWQst7Um5GrpGuz6qxTjzPirRYlSXJWw2dy9dfENUFoei"
+    "$2b$08$pKh8feuF01YgqDjQlqo6reALC4Qyzwy4M9cmRpVsma8GfzN6jZZ.S",
+    "$2b$08$5AkbVeK31AhJh1SQc8pyu.m3GxG2VUJ8ribjq8HF3TQGhhCiCWmlm",
+    "$2b$08$0IlMbh8ByUmlGfcCdxtY7OTSjqFugNHyEp2m8PIaVAAQXPPXn9cU.",
+    "$2b$08$8B9RSGFk7M5XWsje3aZQYOBBr.jKXD20It.rojxrm8II2BdPz3j9a",
+    "$2b$08$vsvKw0NUu2x3NSq/iYHkVe.knh3o0ZuBS2uDsbZNxRfe3N4x4tu.G"
 ];
 const EgyptQuestions = [
     "Egypt Question One",
@@ -371,22 +371,26 @@ const hashedMayanAnswers = [
     "$2b$08$FATYy2pxjNKUGWfJNlFRvOfQ80XLmTHozqjxnexVXmIvlaMNt1sUG",
 ];
 const BonusQuestions = [
-    "Bonus Question One",
-    "Bonus Question Two",
-    "Bonus Question Three",
-    "Bonus Question Four",
-    "Bonus Question Five",
-    "Bonus Question Six",
-    "Bonus Question Seven"
+    "",
+    "",
+    ["https://drive.google.com/file/d/1kEHRQi3MQsH4AdujrDPmD8GlpnWVcDFw/view?usp=sharing", "oct Ysvtbmir cxyittty wimij "],
+    ["Ahh! I am on cAffine 7x24, Now I don’t know how I got this code -",
+        "Waxx C tsl’b qlsw wvk ek Lybyx cu lsb wsnqclo sl Dalsl.",
+        "C ecovb os hsn Umsnzcs lsw.",
+        "Ksi qlsw wval cb wcxx fa sib?(tteekkkk)",
+        "Please help me solve this."],
+    "",
+    "",
+    ""
 ];
 const hashedBonusAnswers = [
-    "$2b$08$jQKI4xOcw43GQNl.jUvMMuoK9DToNX0bijJ6sZC7Sc0Q8DDSSyebq",
-    "$2b$08$OpNKCLJuEbxOKFjwejRRxevETq14040I3rgjgLBjry1NVGAS9rgQ2",
-    "$2b$08$kbAXsQ.i6CprOS9kZotij.gCRCcGDpIKQOzGHJoeA/erATduBwgPK",
-    "$2b$08$2YMFQep7DR9DheCNHnI75eChEeXPrHkmfsCj/QZfiGhuoDNs.3Yjm",
-    "$2b$08$pJIWPRgWueLYlUfQDtvRGOlH7cGsCq6GZS2nSWmnkZoz2VnewUDN6",
-    "$2b$08$CHz0yDt8wdjzRcAQhUPrzOyqCX4Cvemzt1g1pRbNAemCU9ZdDMb6S",
-    "$2b$08$WxJywa4d/TKsJG2mUuLYe.jr1FJOJnhBzTV3Wbbj5lFwDlH6UNb3C",
+    "$2b$08$Zmmz554McFr4Jou82rIDhuSthv1.3sj/Z0QGPG0qRGiZM5SQgC2fS",
+    "$2b$08$GHJWQp2sNZQbcN8kGuLGNerqoviUEt4qc1f13AMfZgTQxVlFm2T4y",
+    "$2b$08$o/pKc9GVCkZdY4HVg5vtpunbNO1NRgaDaVCS6MTFeSu/ZQM2PRFb6",
+    "$2b$08$mi.x.qBi6KxfpuZKTBLmBOKHO7zBXjNktZ3E/MDjrpYuPFlPymSDO",
+    "$2b$08$0mDNckSrxwCJqkauo6/pX.cbq.ctOD1F3TyDwnce4yOhrafN9KV46",
+    "",
+    "",
 ];
 
 app.get("/", (req, res) => res.sendFile(__dirname + "/webPages/index.html"));
@@ -400,7 +404,7 @@ app.get("/loginFailed", (req, res) => res.render("message", {
 
 
 app.get("/login", (req, res) => res.sendFile(__dirname + "/webPages/login.html"));
-app.post("/login", function(req, res) {
+app.post("/login", function (req, res) {
     const user = new User({
         username: req.body.username,
         password: req.body.password
@@ -421,6 +425,7 @@ app.post("/login", function(req, res) {
 
 app.get("/register", (req, res) => res.sendFile(__dirname + "/webPages/register.html"));
 app.post("/register", (req, res) => {
+    console.log("called");
     User.exists({
         username: req.body.username
     }, (err, usernameTaken) => {
@@ -430,21 +435,28 @@ app.post("/register", (req, res) => {
             });
             return;
         } else {
+            let numOfMem;
+            if (req.body.numOfMem === "one")
+                numOfMem = 1;
+            else if (req.body.numOfMem === "two")
+                numOfMem = 2;
+            else if (req.body.numOfMem === "three")
+                numOfMem = 3;
             User.register({
                 username: req.body.username,
-                numerOfMembers: req.body.numOfMem,
+                numerOfMembers: numOfMem,
                 memberOneName: req.body.nameOfMem1,
                 memberOneEmail: req.body.emailOfMem1,
-                memberOneInstitute: req.body.instituteOfMem1,
+                memberOneInstitute: "req.body.instituteOfMem1",
                 memberTwoName: req.body.nameOfMem2,
                 memberTwoEmail: req.body.emailOfMem2,
-                memberTwoInstitute: req.body.instituteOfMem2,
+                memberTwoInstitute: "req.body.instituteOfMem2",
                 memberThreeName: req.body.nameOfMem3,
                 memberThreeEmail: req.body.emailOfMem3,
-                memberThreeInstitute: req.body.instituteOfMem3,
+                memberThreeInstitute: "req.body.instituteOfMem3",
             }, req.body.password, (err, user) => {
                 if (!err) {
-                    passport.authenticate("local")(req, res, function() {
+                    passport.authenticate("local")(req, res, function () {
                         res.redirect("/playground");
                     });
                 } else {
@@ -471,11 +483,29 @@ app.get("/greece", (req, res) => {
     }
 });
 
+app.get("/nothinginside.jpg",(req,res)=>{
+    return res.sendFile(__dirname + "/webPages/nothinginside.jpg");
+});
+app.get("/bonus", (req, res) => {
+    if (req.isAuthenticated()) {
+        if(Number(req.user.bonusQuestionsSolved) === 4)
+        return res.redirect("/nothinginside.jpg");
+        return res.sendFile(__dirname + "/webPages/bonusScroll" + req.user.bonusQuestionsSolved + ".png");
+    } else {
+        return res.redirect("/");
+    }
+});
 app.get("/playground/:country", (req, res) => {
     //state can be "falseAnswerSubmitted" which que's us to tell the user he submitted a false answer,
     //state can be "correctAnswerSubmitted" which que's us to tell the user he submitted the correct answer,
     //state can be "showConfirmationCard" which means user asked for a hint and we need to show him confirmation card.
     //state can be "cooldownViolated" which mean user submitted before the cooldown period was complete
+    let clue = "Ahh! I knew you will look for a key here, but sorry it’s not here \n";
+    clue += "Want a hint??? \n"
+    clue += "Since you are smart enough to search key here, I will give you a hint"
+    clue += "Key was in front of you even before this event started must have seen an easter egg, if you don’t have any idea. You CIRCLED around that key again and again."
+    clue += "and yes, just for your info - I make sensible things, but I won’t force you to do anything"
+    clue += "gotcha?"
     if (req.isAuthenticated()) {
         // a card status of 1 reflects that card is locked, 2 reflects card is asking "are you sure", 3 reflects card is unlocked
         if (req.params.country === "Bonus" && !req.user.bonusQuestionsVisible)
@@ -632,6 +662,8 @@ app.get("/playground/:country", (req, res) => {
                 questionContent: BonusQuestions[req.user.bonusQuestionsSolved],
                 questionNumber: req.user.bonusQuestionsSolved,
                 cooldownViolated: (req.query.cooldownViolated ? true : false),
+                clue: req.user.bonusQuestionsSolved == 0 ? clue : "",
+                photoQuestion: Number(req.user.bonusQuestionsSolved) === 0 || Number(req.user.bonusQuestionsSolved) === 1 || Number(req.user.bonusQuestionsSolved) === 4 ? true : false,
                 country: "Bonus"
             });
         } else
@@ -852,8 +884,8 @@ app.get("/teamanswerhistory", async (req, res) => {
                 return res.send("this isn't even a mongodb id");
 
             if (!await User.exists({
-                    _id: mongoose.Types.ObjectId(req.query.teamid)
-                }))
+                _id: mongoose.Types.ObjectId(req.query.teamid)
+            }))
                 return res.send("user doesn't exists");
 
             const answers = new Array(0);
