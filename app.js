@@ -138,14 +138,14 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: (new Array(15)).fill(false)
     },
-    bonusQuestionsSolved: {
+    BonusQuestionsSolved: {
         type: Number,
         required: true,
         default: 0,
         min: 0,
-        max: 7
+        max: 5
     }, //0 when constructor is called
-    bonusQuestionsVisible: {
+    BonusQuestionsVisible: {
         type: Boolean,
         required: true,
         default: false
@@ -379,8 +379,6 @@ const BonusQuestions = [
         "C ecovb os hsn Umsnzcs lsw.",
         "Ksi qlsw wval cb wcxx fa sib?(tteekkkk)",
         "Please help me solve this."],
-    "",
-    "",
     ""
 ];
 const hashedBonusAnswers = [
@@ -388,9 +386,7 @@ const hashedBonusAnswers = [
     "$2b$08$GHJWQp2sNZQbcN8kGuLGNerqoviUEt4qc1f13AMfZgTQxVlFm2T4y",
     "$2b$08$o/pKc9GVCkZdY4HVg5vtpunbNO1NRgaDaVCS6MTFeSu/ZQM2PRFb6",
     "$2b$08$mi.x.qBi6KxfpuZKTBLmBOKHO7zBXjNktZ3E/MDjrpYuPFlPymSDO",
-    "$2b$08$0mDNckSrxwCJqkauo6/pX.cbq.ctOD1F3TyDwnce4yOhrafN9KV46",
-    "",
-    "",
+    "$2b$08$0mDNckSrxwCJqkauo6/pX.cbq.ctOD1F3TyDwnce4yOhrafN9KV46"
 ];
 
 app.get("/", (req, res) => res.sendFile(__dirname + "/webPages/index.html"));
@@ -479,22 +475,22 @@ app.get("/greece", (req, res) => {
     if (req.isAuthenticated()) {
         res.sendFile(__dirname + "/webPages/greeceScroll" + req.user.GreeceQuestionsSolved + ".png");
     } else {
-        res.redirect("/");
+        res.redirect("/login");
     }
 });
 
-app.get("/nothinginside.jpg",(req,res)=>{
-    return res.sendFile(__dirname + "/webPages/nothinginside.jpg");
-});
+app.get("/nothinginside.jpg", (req, res) => res.sendFile(__dirname + "/webPages/nothinginside.jpg"));
+
 app.get("/bonus", (req, res) => {
     if (req.isAuthenticated()) {
-        if(Number(req.user.bonusQuestionsSolved) === 4)
-        return res.redirect("/nothinginside.jpg");
-        return res.sendFile(__dirname + "/webPages/bonusScroll" + req.user.bonusQuestionsSolved + ".png");
+        if (Number(req.user.BonusQuestionsSolved) === 4)
+            return res.redirect("/nothinginside.jpg");
+        return res.sendFile(__dirname + "/webPages/bonusScroll" + req.user.BonusQuestionsSolved + ".png");
     } else {
-        return res.redirect("/");
+        return res.redirect("/login");
     }
 });
+
 app.get("/playground/:country", (req, res) => {
     //state can be "falseAnswerSubmitted" which que's us to tell the user he submitted a false answer,
     //state can be "correctAnswerSubmitted" which que's us to tell the user he submitted the correct answer,
@@ -508,12 +504,12 @@ app.get("/playground/:country", (req, res) => {
     clue += "gotcha?"
     if (req.isAuthenticated()) {
         // a card status of 1 reflects that card is locked, 2 reflects card is asking "are you sure", 3 reflects card is unlocked
-        if (req.params.country === "Bonus" && !req.user.bonusQuestionsVisible)
+        if (req.params.country === "Bonus" && !req.user.BonusQuestionsVisible)
             return res.render("message", {
                 message: "Plase solve all 5 questions from all 5 countries before trying to access stage 2 questions."
             });
 
-        if (req.user[req.params.country + "QuestionsSolved"] == (req.params.country === "Bonus" ? 7 : 5))
+        if (req.user[req.params.country + "QuestionsSolved"] == 5)
             return res.render("message", {
                 message: "You have solved all questions from " + req.params.country
             });
@@ -659,19 +655,18 @@ app.get("/playground/:country", (req, res) => {
             return res.render("playgroundBonus", {
                 falseAnswerSubmitted: (req.query.falseAnswerSubmitted ? true : false),
                 correctAnswerSubmitted: (req.query.correctAnswerSubmitted ? true : false),
-                questionContent: BonusQuestions[req.user.bonusQuestionsSolved],
-                questionNumber: req.user.bonusQuestionsSolved,
+                questionContent: BonusQuestions[req.user.BonusQuestionsSolved],
+                questionNumber: req.user.BonusQuestionsSolved,
                 cooldownViolated: (req.query.cooldownViolated ? true : false),
-                clue: req.user.bonusQuestionsSolved == 0 ? clue : "",
-                photoQuestion: Number(req.user.bonusQuestionsSolved) === 0 || Number(req.user.bonusQuestionsSolved) === 1 || Number(req.user.bonusQuestionsSolved) === 4 ? true : false,
+                clue: req.user.BonusQuestionsSolved == 0 ? clue : "",
+                photoQuestion: Number(req.user.BonusQuestionsSolved) === 0 || Number(req.user.BonusQuestionsSolved) === 1 || Number(req.user.BonusQuestionsSolved) === 4 ? true : false,
                 country: "Bonus"
             });
         } else
             return res.redirect("/playground");
     } else
-        res.redirect("/");
+        res.redirect("/login");
 });
-
 app.post("/playground/:country", async (req, res) => {
     if (req.isAuthenticated()) {
 
@@ -800,15 +795,15 @@ app.post("/playground/:country", async (req, res) => {
                 MayanQuestionsSolved: req.user.MayanQuestionsSolved + (answerCorrectness ? 1 : 0),
                 latestAnswerTime: submissionTime
             });
-        } else if (req.params.country === "Bonus" && req.user.bonusQuestionsSolved < 7 && req.user.bonusQuestionsVisible) {
-            answerCorrectness = await bcrypt.compare(req.body.response, hashedBonusAnswers[req.user.bonusQuestionsSolved]);
+        } else if (req.params.country === "Bonus" && req.user.BonusQuestionsSolved < 5 && req.user.BonusQuestionsVisible) {
+            answerCorrectness = await bcrypt.compare(req.body.response, hashedBonusAnswers[req.user.BonusQuestionsSolved]);
             const increaseInScore = answerCorrectness ? marksPerQuestion : 0;
             const answer = await new Answer({
                 team: req.user._id,
                 time: submissionTime,
                 correctness: answerCorrectness,
                 questionAttempted: {
-                    questionNumber: req.user.bonusQuestionsSolved,
+                    questionNumber: req.user.BonusQuestionsSolved,
                     country: "Bonus",
                 },
                 hintOneTaken: false,
@@ -821,13 +816,13 @@ app.post("/playground/:country", async (req, res) => {
             }, {
                 answersArray: [...req.user.answersArray, answer._id],
                 score: req.user.score + increaseInScore,
-                bonusQuestionsSolved: req.user.bonusQuestionsSolved + (answerCorrectness ? 1 : 0),
+                BonusQuestionsSolved: req.user.BonusQuestionsSolved + (answerCorrectness ? 1 : 0),
                 latestAnswerTime: submissionTime
             });
         }
 
 
-        if (!req.user.bonusQuestionsVisible) {
+        if (!req.user.BonusQuestionsVisible) {
             const {
                 IndiaQuestionsSolved,
                 UnitedKingdomQuestionsSolved,
@@ -844,7 +839,7 @@ app.post("/playground/:country", async (req, res) => {
                 await User.updateOne({
                     _id: req.user._id
                 }, {
-                    bonusQuestionsVisible: true
+                    BonusQuestionsVisible: true
                 });
         }
         if (!COUNTRIES.includes(req.params.country))
@@ -852,7 +847,7 @@ app.post("/playground/:country", async (req, res) => {
 
         return res.redirect("/playground/" + req.params.country + "/?" + (answerCorrectness ? "correctAnswerSubmitted=true" : "falseAnswerSubmitted=true"));
     } else {
-        res.redirect("/");
+        res.redirect("/login");
     }
 });
 
@@ -872,7 +867,7 @@ app.get("/admin", (req, res) => {
             res.redirect("/playground");
         }
     } else {
-        res.redirect("/");
+        res.redirect("/login");
     }
 });
 
@@ -904,7 +899,7 @@ app.get("/teamanswerhistory", async (req, res) => {
             return res.redirect("/playground");
         }
     } else {
-        return res.redirect("/");
+        return res.redirect("/login");
     }
 });
 
@@ -929,7 +924,7 @@ app.get("/leaderboard", (req, res) => {
         })(); //Using a Immediately Invoked Function Expression(IIFE) as setting it to async allows mongoodb to act inside as if it returns objects instead of promises
         //and helps me avoide writing many .then functions as everything can be done from the same control flow
     } else {
-        return res.redirect("/");
+        return res.redirect("/login");
     }
 });
 
@@ -1064,7 +1059,7 @@ app.get("/gethint/:country", (req, res) => {
         } else
             return res.redirect("/playground");
     } else
-        res.redirect("/");
+        res.redirect("/login");
 });
 
 //below is enviornment code
