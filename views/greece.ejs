@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <title>Playground</title>
     <link rel="stylesheet" href="/css/stylesTW.css">
-    <link rel="shortcut icon" type="image/jpg" href="./assets/img/mlsc_logo.png" />
+    <link rel="icon" type="image/jpg" href="/assets/img/mlsc_logo.png" />
+
 
     <script src="https://use.fontawesome.com/688dfff0c7.js"></script>
 
@@ -61,7 +62,7 @@
     </div>
 
     <div class="m-4 inline-block col-span-6 col-start-2 row-start-1 lg:col-span-1  lg:col-start-7 space-y-1 lg:space-y-5">
-        <div class="rounded-lg border-2">
+        <div class="rounded-lg border-2 p-2">
             <% if(cardOneStatus === 1){ %>
             <div>
                 <a href="/playground/<%=country%>/?showConfirmationCard=true"> <span class="hidden md:inline"> Locked Hint</span> 1 <i class="fa fa-lock" aria-hidden="true"></i></a>
@@ -80,7 +81,7 @@
 
         </div>
 
-        <div class="rounded-lg border-2">
+        <div class="rounded-lg border-2 p-2">
             <% if(cardTwoStatus === 1){ %>
             <div>
                 <a href="/playground/<%=country%>/?showConfirmationCard=true"><span class="hidden md:inline"> Locked Hint</span> 2 <i class="fa fa-lock" aria-hidden="true"></i></a>
@@ -97,7 +98,7 @@
             <% } %>
         </div>
 
-        <div class="rounded-lg border-2">
+        <div class="rounded-lg border-2 p-2">
             <% if(cardThreeStatus === 1){ %>
             <div>
                 <a href="/playground/<%=country%>/?showConfirmationCard=true"><span class="hidden md:inline"> Locked Hint</span> 3 <i class="fa fa-lock" aria-hidden="true"></i></a>

@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <title>Playground</title>
     <link rel="stylesheet" href="/css/stylesTW.css">
-    <link rel="shortcut icon" type="image/jpg" href="./assets/img/mlsc_logo.png" />
-
     <script src="https://use.fontawesome.com/688dfff0c7.js"></script>
+    <link rel="icon" type="image/jpg" href="/assets/img/mlsc_logo.png" />
+
 
 </head>
 
@@ -57,7 +57,7 @@
       <div class="m-4 pt-10 text-xl overflow-y-auto self-start inline-block col-span-7 col-start-1 row-start-2 lg:col-span-5 lg:row-start-1 lg:col-start-2"> <!-- question  -->
         <span class="text-6xl p-1"> <%=country%> Question <%=questionNumber+1%> </span>
         <%if(photoQuestion){%>
-            <p class="p-1">This question is in the form of a scroll. Click <a href="/bonus" class="text-blue-500" download>here</a> to get your scroll.</p> 
+            <p class="p-1">This question is in the form of a scroll. Click <a href="/bonus" class="text-blue-500" target="blank">here</a> to get your scroll.</p> 
             <%}else{%>
                 <%for(const line of questionContent){%>
     <p class="p-1"><%=line%></p>
