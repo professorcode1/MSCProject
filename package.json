@@ -1,5 +1,5 @@
 {
-  "name": "mscproject",
+  "name": "mscprojectdevelopment",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -7,23 +7,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/professorcode1/MSCProject.git"
-  },
-  "author": "Raghav,Sahaj",
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/professorcode1/MSCProject/issues"
-  },
-  "homepage": "https://github.com/professorcode1/MSCProject#readme",
   "dependencies": {
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
+    "connect-mongo": "^3.2.0",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
-    "express-favicon": "^2.0.1",
     "express-session": "^1.17.1",
     "mongoose": "^5.11.15",
     "passport": "^0.4.1",

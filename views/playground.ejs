@@ -6,8 +6,6 @@
     <title>Playground</title>
     <link rel="stylesheet" href="/css/stylesTW.css">
     <link rel="icon" type="image/jpg" href="/assets/img/mlsc_logo.png" />
-
-
     <script src="https://use.fontawesome.com/688dfff0c7.js"></script>
 
 </head>
@@ -55,7 +53,7 @@
       <div class="m-4 pt-10 text-xl overflow-y-auto self-start inline-block col-span-7 col-start-1 row-start-2 lg:col-span-5 lg:row-start-1 lg:col-start-2"> <!-- question  -->
         <span class="text-6xl p-1"> <%=country%> Question <%=questionNumber+1%> </span>
         <%for(const line of questionContent){%>
-    <p class="p-1"><%=line%></p> <%}%>
+    <p class="p-1" style="user-select:none;"><%=line%></p> <%}%>
     <%if(country==="India" && questionNumber==1){%>
         Head <a href="/indiaQuestion2Audio" target="_blank" class="text-blue-500 "> here </a> to get the audio for the corresponding question.
     <%}%>

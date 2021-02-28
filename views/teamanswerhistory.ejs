@@ -11,6 +11,48 @@
 
 <body>
 
+    <h1 style="text-align: center;">Team Name : <%=team.username%> &nbsp;&nbsp;&nbsp; Score : <%=team.score%></h1>
+    <h5 style="text-align: center;"> 
+        <span class="px-3">Member One:<%=team.memberOneName%></span>
+        <span class="px-3">Member Two:<%=team.memberTwoName%></span>
+        <span class="px-3">Member Three:<%=team.memberThreeName%></span>
+    </h5>
+    <h5 style="text-align: center;"> 
+        <span class="px-3">Member One Email:<%=team.memberOneEmail%></span>
+        <span class="px-3">Member Two Email:<%=team.memberTwoEmail%></span>
+        <span class="px-3">Member Three Email:<%=team.memberThreeEmail%></span>
+    </h5>
+    <h5 style="text-align: center;"> 
+        <span class="px-3"> Indian Questions Solved : <%=team.IndiaQuestionsSolved%></span>
+        <span class="px-3"> United Kingdom Questions Solved : <%=team.UnitedKingdomQuestionsSolved%></span>
+        <span class="px-3"> Greece Questions Solved : <%=team.GreeceQuestionsSolved%></span>
+        <span class="px-3"> Egypt Questions Solved : <%=team.EgyptQuestionsSolved%></span>
+        <span class="px-3"> Mayan Questions Solved : <%=team.MayanQuestionsSolved%></span>
+        <span class="px-3"> Bonus Questions Solved : <%=team.BonusQuestionsSolved%></span>
+    </h5>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Hints Taken / Country</th>
+            <th scope="col">India</th>
+            <th scope="col">United Kindom</th>
+            <th scope="col">Greece</th>
+            <th scope="col">Egypt</th>
+            <th scope="col">Mayan</th>
+          </tr>
+        </thead>
+        <tbody>
+            <%for(let x=4;x>=0;x--){%>
+          <tr>
+            <th scope="row">Question <%=x+1%></th>
+            <td><%=team.IndiaHints[3*x]?"Hint 1  ":""%> <%=team.IndiaHints[3*x+1]?"Hint 2  ":""%> <%=team.IndiaHints[3*x+2]?"Hint 3":""%></td>
+            <td><%=team.UnitedKingdomHints[3*x]?"Hint 1  ":""%> <%=team.UnitedKingdomHints[3*x+1]?"Hint 2  ":""%> <%=team.UnitedKingdomHints[3*x+2]?"Hint 3":""%></td>
+            <td><%=team.GreeceHints[3*x]?"Hint 1  ":""%> <%=team.GreeceHints[3*x+1]?"Hint 2  ":""%> <%=team.GreeceHints[3*x+2]?"Hint 3":""%></td>
+            <td><%=team.EgyptHints[3*x]?"Hint 1  ":""%> <%=team.EgyptHints[3*x+1]?"Hint 2  ":""%> <%=team.EgyptHints[3*x+2]?"Hint 3":""%></td>
+            <td><%=team.MayanHints[3*x]?"Hint 1  ":""%> <%=team.MayanHints[3*x+1]?"Hint 2  ":""%> <%=team.MayanHints[3*x+2]?"Hint 3":""%></td>
+          </tr><%}%>
+        </tbody>
+      </table>
 
 
     <div class="container">
@@ -22,7 +64,7 @@
                     <div class="card-body">
                         <h5 class="card-title"><%=answer.answerSubmitted%></h5>
                         <p class="card-text">
-                            Question <%=answer.questionAttempted.questionNumber%> of Country <%=answer.questionAttempted.country%> <br>
+                            Question <%=answer.questionAttempted.questionNumber+1%> of Country <%=answer.questionAttempted.country%> <br>
                             Submitted on <%=time.getDate()%> at time <%=time.getHours()+":"+time.getMinutes()+":"+time.getSeconds()%> <br>
                             Hint 1 <%= answer.hintOneTaken ? "Yes" : "No" %>
                             Hint 2 <%= answer.hintTwoTaken ? "Yes" : "No" %>

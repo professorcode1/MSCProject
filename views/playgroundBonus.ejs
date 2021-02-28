@@ -60,7 +60,7 @@
             <p class="p-1">This question is in the form of a scroll. Click <a href="/bonus" class="text-blue-500" target="blank">here</a> to get your scroll.</p> 
             <%}else{%>
                 <%for(const line of questionContent){%>
-    <p class="p-1"><%=line%></p>
+    <p class="p-1" style="user-select: none;"><%=line%></p>
     <%}}%>
     <form action="/playground/<%=country%>" method="post">
         <input type="text" name="response" required placeholder="Your Answer" class="p-2 mt-4 border rounded-lg focus:ring-4 ring-inset ring-green-600">

@@ -1,6 +1,5 @@
 //jshint esversion:6
 const express = require("express");
-const favicon = require('express-favicon');
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
@@ -8,6 +7,7 @@ const app = express();
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
+const MongoStore = require('connect-mongo')(session);
 const bcrypt = require("bcrypt");
 require('dotenv').config();
 const COUNTRIES = ["India", "UnitedKingdom", "Greece", "Egypt", "Mayan", "Bonus"];
@@ -21,15 +21,8 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static("public"));
 
-app.use(session({
-    secret: "IWntLCZxnk0nOpaHBjep",
-    resave: false,
-    saveUninitialized: false
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-
-mongoose.connect("mongodb+srv://cluster0.tbblr.mongodb.net/MLSCScavengerHunt", {
+mongoose.connect("mongodb+srv://cluster0.tbblr.mongodb.net/MLSCScavengerHuntDep", {
+    poolSize: 460,
     auth: {
         user: "admin-raghav",
         password: encodeURIComponent(process.env.MONGOCLUSTERPASS)
@@ -37,6 +30,16 @@ mongoose.connect("mongodb+srv://cluster0.tbblr.mongodb.net/MLSCScavengerHunt", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
+
+app.use(session({
+    secret: "You were expecting this string to be a secret used to encrypt cookies, but It was me, DIO!",
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 mongoose.set("useCreateIndex", true);
 
 const userSchema = new mongoose.Schema({
@@ -234,13 +237,25 @@ const IndiaQuestions = [
     //3
     [""],
     //4
-    ["You find the box using the path that was described in the scrolls. but as soon you look at the box, you see a complicated lock that you have to solve it to open the damn thing up.",
+    [
+        "You find the box using the path that was described in the scrolls:but as soon you look at the box, you see a complicated lock that you have to solve it to open the damn thing up.",
         "solve the question:",
-        "Find all the palindromes in the given string and input the answer according to the sample case given below:",
-        "string: acdcdcaabbaaadaadacdaadcadna",
-        "palindromes in it: abba and cdaadc",
-        "answer: 4 2 2 2 (4a, 2b, 2c and 2d)",
-        "Actual string: adcaabbaaacdcdcdcdbbcaacbadcadcadccbcbcbcaadcbbcdaddaabbaaddbcdadcddaabbaddaaccaadcaaadbaabbccb"],
+        "Find all the palindromes in the given string and input the answer according to the sample case given below with following rules:",
+        "",
+        "Rules to follow:",
+        "1) Palindromes that are more than or equal to 4 characters long should be considered.",
+        "2) Palindromes with even number of characters should be considered.",
+        "3) Repeating palindromes should be disregarded.",
+        "",
+        "Sample Case:",
+        "",
+        "Sample String: acdcdcaabbaaadaadacdaadcadna",
+        "palindromes in it: {aabbaa,abba,acdaadca,adaada,cdaadc,daad,dacdaadcad}",
+        "Answer: 22 4 6 12 (22 - > a, 4 -> b, 6 -> c and 12 -> d)",
+        "Input Answer: 224612",
+        "",
+        "Input String: adcaabbaaacdcdcdcdbbcaacbadcadcadccbcbcbcaadcbbcdaddaabbaaddbcdadcddaabbaddaaccaadcaaadbaabbccb"
+    ],
     //5
     ["After opening the box, you look at its contents and notice that not all the coins are the same.upon expecting a few coins, you realise that they are all fake.",
         "you figure out that there is only one real coin.",
@@ -278,39 +293,59 @@ const IndiaHints = [
     "You only have to give coins to tm1 and tm3",
 ];
 const hashedIndiaAnswers = [
-"$2b$08$2eTQpkOqcxFNfKMX6sXosuS57H1FIVIMfHY.qUTfCf3FOfbB5thL6",
-"$2b$08$ephXxnWrCf1xbmV6UlRwHOmHELZ1QoYatrkHwTPx7ldmm63wHDf5K",
-"$2b$08$jgoEwEbho/r7JxAo7qNpKO7cyrmbYPlzVDpl8HR3LFHNuPDCyMlDq",
-"$2b$08$l8G3tFEInGJ3ErMApbs7Qee5tT.shiLCnxT3ucedmtsboekUbvivu",
-"$2b$08$pWxgICU7AZcNRrjd2bUr6eZUh/ObCElZNCEF7lfyqbU/UzzvTqeqy"
+    "$2b$08$2eTQpkOqcxFNfKMX6sXosuS57H1FIVIMfHY.qUTfCf3FOfbB5thL6",
+    "$2b$08$ephXxnWrCf1xbmV6UlRwHOmHELZ1QoYatrkHwTPx7ldmm63wHDf5K",
+    "$2b$08$jgoEwEbho/r7JxAo7qNpKO7cyrmbYPlzVDpl8HR3LFHNuPDCyMlDq",
+    "$2b$08$kn4Oz7jGsBROHEmBcuPwUO6dHo9ho8146LzcXGeJ0llAUBPHw13O6",
+    "$2b$08$pWxgICU7AZcNRrjd2bUr6eZUh/ObCElZNCEF7lfyqbU/UzzvTqeqy"
 ];
 const UnitedKingdomQuestions = [
     //1
-    ["PLBBDXIUZNOWQOYGBEWCXJUNXTHNUPKWPFPUDRYNQQWXRSJYVZUCAQQXWKJVLHWDXQNGKGIKVTJLWKQNAXRQCOCW"],
+    [
+        "you have come to UK to find the relic,",
+        "But what it is?  You dont have a clue.",
+        "all you have is this text, ",
+        "guess the relic to move ahead.",
+        "PLBBDXIUZNOWQOYGBEWCXJUNXTHNUPKWPFPUDRYNQQWXRSJYVZUCAQQXWKJVLHWDXQNGKGIKVTJLWKQNAXRQCOCW"],
     //2
-    ["On your journey to the next stop you find a strange old man, who wants to give you 100 point but on the condition you solve his doubt,he wants to know in unique ways, how many ways are there to write “10000” as a sum of at least 2 natural numbers.",
+    [
+        "on your quest to get excalibur, you look for clues to find the chambers of kings.",
+        "you cant find anything, you sit exhausted,",
+        "a strange old man says he will lead you if you solve this:",
+        "On your journey to the next stop you find a strange old man, who wants to give you 100 point but on the condition you solve his doubt,he wants to know in unique ways, how many ways are there to write “10000” as a sum of at least 2 natural numbers.",
         "Enter the answer modulo the biggest prime number below 10^12"],
     //3
-    ['“Some people don’t like to socialize, do you? Who else doesn’t by the way?”',
+    [
+        "the old man leads you to the chambers,",
+        "But the doors are closed, ",
+        'all he says is " the code to this gate lies in the phrase":',
+        '“Some people don’t like to socialize, do you? Who else doesn’t by the way?”',
         '“The profile you are looking for is in the format “answer to above_270221”'],
     //4
-    ["Given an input string, convert the alphabets to numbers then the same to binary.",
-        "Then….then what? Observe maybe.",
-        " loremipsumdolorsitametconsecteturadipisicingelitametlaboriosamcupiditatefacilisaliquidodiopraesentiumullamsintrati",
-        " Input string: club name"],
+    [
+        "due to issue's with this question,this question has been removed.",
+        "Write anything in the text box and submit to move onto the next queston.",
+        "We humbly apologize for the inconvenience."
+    ],
     //5
-    [""],
+    [
+        "there it is,  the thing for which you are here for,",
+        "stuck in stone, The sword.",
+        "The myth is only saying the name releases the sword:",
+        "engraved below are these  symbols",
+        "answer the question and take the sword."
+    ],
 ];
 const UnitedKingdomHints = [
     "What Wikipedia article does it lead to, what to do with it now though",
     "Think about the cipher- picture might help",
     " https://drive.google.com/file/d/195CXqfjtMjQo4bgKwDNROuK_hr_dQLVg/view?usp=sharing",
     "The prime you are looking for is 999999999989",
-    "Memorization",
+    "Memoization",
     "What did you learn from the infamous Coin Change problem",
     "Introvert or extrovert or both. What was the date of the event again?",
     'Think about the first clue “answer_SOME DATE”, emphasis on bold.',
-    "The answer is some format that made it 10 characters long",
+    "The answer's format is DDMMYYYY",
     "note the same lengths of the binary and the text ",
     "include exclude ",
     "alphabets corresponding to one are in the final answer rest not",
@@ -319,18 +354,18 @@ const UnitedKingdomHints = [
     "An important person from the city shown by the coordinates",
 ];
 const hashedUnitedKingdomAnswers = [
-"$2b$08$s6r5O5.7Cl9I3OODlsAyA.FCaaJ2u4LbTZhbeWMF2vY1F823ga7KG",
-"$2b$08$.dJTzERpLG4G53Z3vDWKz.NI99Wqd/kZQRNryLquv/jZrfYS16maC",
-"$2b$08$OAiGKJ/bP40BpcRRlF8V/OMksJ7WWIwAZdloNdqKE85vRMm8TL9Y.",
-"$2b$08$P64f8WNp8yYu3PNEyAum3e9x/K5S9QfaBtJRbRXconKCcwSPwwvPa",
-"$2b$08$9jicgscqejSsd1rhJfBZUuk1KvE603/1PTFGF6V8iGoj.g5e/vaIq"
+    "$2b$08$s6r5O5.7Cl9I3OODlsAyA.FCaaJ2u4LbTZhbeWMF2vY1F823ga7KG",
+    "$2b$08$.dJTzERpLG4G53Z3vDWKz.NI99Wqd/kZQRNryLquv/jZrfYS16maC",
+    "$2b$08$OAiGKJ/bP40BpcRRlF8V/OMksJ7WWIwAZdloNdqKE85vRMm8TL9Y.",
+    "$2b$08$P64f8WNp8yYu3PNEyAum3e9x/K5S9QfaBtJRbRXconKCcwSPwwvPa",
+    "$2b$08$9jicgscqejSsd1rhJfBZUuk1KvE603/1PTFGF6V8iGoj.g5e/vaIq"
 ];
 const GreeceHints = [
     "a patterned ring",
     "atlantic ocean",
     "island of atlas",
     "voyager 2 space mission's last flyby",
-    "greek,frenc,german,english",
+    "greek,french,german,english",
     "levante voiture",
     "secret message passing",
     "sequence matters",
@@ -351,13 +386,22 @@ const hashedGreeceAnswers = [
 ];
 const EgyptQuestions = [
     //1
-    ["qccyb://maren.pxxpun.lxv/orun/m/1XQ45QAizLJ3E_cQeK7QtwGcgUPyYyEhk/ernf?dby=bqjarwp"],
+    [
+        "You want to catch a train to Egypt, but you got trapped in a cave. you observed the following text written on wall of the cave",
+        '"qccyb://maren.pxxpun.lxv/orun/m/1XQ45QAizLJ3E_cQeK7QtwGcgUPyYyEhk/ernf?dby=bqjarwp"',
+        "solve this to catch your train to Egypt"
+    ],
     //2
-    ["who am i? a human? a falcon? a sheep or a lion?",
+    [
+        "After getting off the train,You go to find some camels and find a camel driver that agrees to go with us, even in this HARSH weather, but only if we solve his problem",
+        "who am i? a human? a falcon? a sheep or a lion?",
         "what is my purpose? All i know is my riddle to guard my city.",
         "that truly is my only identity."],
     //3
-    ["Beterest seems to have a keen interest in cubes. He challenges you to competition.",
+    [
+        "You reach the Sphinx. Going in between its paws, and under the belly of the Sphinx.",
+        "There's a hallway in front of you, you start moving forward. but the door shuts the moment you reach the end. Get the password to open the door by solving the following problem:",
+        "Beterest seems to have a keen interest in cubes. He challenges you to competition.",
         "He will help you only if you beat him in this challenge. He will give you a number your task is to find the sum of odd powers of that number till the number itself:",
         "eg: if the given number is 3 then answer will be 3^1+3^3 = 30",
         "since the sum can be huge compute it modulo 998244353",
@@ -368,7 +412,12 @@ const EgyptQuestions = [
         " You start heading in a random direction and encounter following text written on a board.",
         "",
         "Bakkar s10 / Super Henedi s5 = ?"],
-    [""]
+    //5
+    [
+        "Following the direction boards, by sheer luck, you are able to find the tomb of anubis, and the dead remains of his followers surrounding it.",
+        "Before going through the coffin, you find the Ankh, that anubis used to guide the dead souls into the underworld with.",
+        "Still not able to find a way out, you start to go through the tomb and find a manuscript that has unclear symbols some on it. Your gut tells you that this might tell you the way out, so you start solving it."
+    ]
 
 ];
 const EgyptHints = [
@@ -391,62 +440,71 @@ const EgyptHints = [
 const hashedEgyptAnswers = [
     "$2b$08$jzfcErucU/SzIFnSvym.feIsuXSx4UK60urBqn/kTWff8teGIiImC",
     "$2b$08$D645zGiUmLWzuOzONOcWZOgaP8YeRPpBZy4NTz4opJHkk4jXfIUcC",
-    "$2b$08$JaK2TlPmvUXcSFKj8XvErOzzPxswIgqanZN3aa1QA/uNlvYj9Ldrm",
+    "$2b$08$Llj49RfLiulN3St6d70YMe2.c2Ewr.NnYPZCzM9l87k2eIc/bp/w2",
     "$2b$08$xYSt5g1DNAu6RLcIPdWMT.CrlRT97/qnIJQY3GKibJ4TiKUne/R0y",
-    "$2b$08$2MnjwMtFObU6YOTKbE7nD.nB4qJsM2hxlm.GXrihPrFzMZpPNsaba"    
+    "$2b$08$2MnjwMtFObU6YOTKbE7nD.nB4qJsM2hxlm.GXrihPrFzMZpPNsaba"
 ];
 const MayanQuestions = [
     //1
-    ["You arrive on the continent of South America, via a cruise ship.",
+    [
+        "You arrive on the continent of South America, via a cruise ship.",
         "Exhausted and tired, you go to a motel and find an empty to pass out on, thinking about what to do and how to do it.",
         "Just then, you suddenly remember about the stone tablet you saw at a museum and google it out.",
         "Decipher the text on it to find out the location:",
-        '“25 57 85 69 77 46 48 46 64 98 69 88 47 39 48 57 88 70 75 39 58 34 66 87 48 55 68 47 37 85 67 59 88 78 76 24 85 86 59 87 68 35 38 57 87 46 87 75 48 44 55 65 47 55 56 36 24 65 78 49 58 39 57 25 57 98 87 59 39 57 57 65 69 57 86 39 35 57 77 69 46 69 67 58 34 74 88 80 77 68 67 24 73 67 46 77 68 35 67 53 87 49 79 69 68 58 55 99 78 68 45 48 46 56 86 50 88 58 45 37 75 68 79 67 39 68 55 57 65 78 89 66 39”'],
+        '“25 57 85 69 77 46 48 46 64 98 69 88 47 39 48 57 88 70 75 39 58 34 66 87 48 55 68 47 37 85 67 59 88 78 76 24 85 86 59 87 68 35 38 57 87 46 87 75 48 44 55 65 47 55 56 36 24 65 78 49 58 39 57 25 57 98 87 59 39 57 57 65 69 57 86 39 35 57 77 69 46 69 67 58 34 74 88 80 77 68 67 24 73 67 46 77 68 35 67 53 87 49 79 69 68 58 55 99 78 68 45 48 46 56 86 50 88 58 45 37 75 68 79 67 39 68 55 57 65 78 89 66 39”',
+        "key: cyptii"
+    ],
     //2
-    ["After reaching your destination , Standing at the foot of the mountain , you decide to climb up.",
-        "Some of the stones of the of the steps are faulty/broken and to avoid being hurt you plan to avoid those stones.",
+    [
+        "After reaching your destination , standing at the foot of the mountain , you decide to climb up.",
+        "Some of the stone steps are faulty/broken and to avoid being hurt you plan to avoid those stones.",
         "Identify these.",
         "Solve this question to move ahead.",
         "Question:",
         "create a multiplication table of division modulo 26 upto 50",
         "Choose the elements from the matrix in the order aij, such that j = i-1. Arrange the series in ascending order and remove any duplicate elements.",
-        "For example, in this, the answer would be: 0 2 6 12 20"],
+        "For example, in this image, the answer would be: 0 2 6 12 20",
+    ],
     //3
-    ["In the city of macchu Picchu, you’re clueless so you head to the ancient town hall filled with tourists.",
+    ["In the city of machu Picchu, you’re clueless so you head to the ancient town hall filled with tourists.",
         "The place  has  run down walls , covered with ancient texts. you ask around the tourist guide for legends/ mystical objects that you could find, but to your disappointment, the language the tourist guide uses is unknown to you.",
         "Solve it to continue:",
         '“hannankayuku”',
         "where all three realms meet"],
     //4
-    [""],
+    [
+        "You reach the path to the Temple of the moon. This trail seems to be a maze.",
+        "As you cross each path you find some numbers on the ground.",
+        " Keeping these numbers in mind , solve the maze and enter the sum of the correct numbers that you encountered while solving the maze to move further.",
+    ],
     //5
     ["You reach the temple of the moon. There’s a large chest",
         "Decipher the text given to find your next intruction:",
         "oafpdxj .lbsj aelu loa kupm va aubvjjh hazup nupdvssvm loa va vn"]
 ];
 const MayanHints = [
-    "a supporter of an extreme Russian revolutionary party c. 1900 which found nothing to approve of in the established social order.",
+    "a supporter of an extreme Russian revolutionary party c. 1900 which found nothing to approve of in the established social order.",
     "a person who believes that life is meaningless and rejects all religious and moral principles",
     "Synonym Of Atheist",
     "In computing, the modulo operation returns the remainder of a division, after one number is divided by another (called the modulus of the operation).",
     "https://www.geeksforgeeks.org/multiplicative-inverse-under-modulo-m/",
     "There are 7 digits",
-    "Its a place",
+    "the Hanan Pacha (the heavens, or world of above), the Kay Pacha (the earth, or physical life), and the Ukju Pacha (the underworld, or world of below)",
     "Its a temple",
-    "To the moon",
+    "of the moon",
     "Collect the numbers",
     "Add the numbers that you have gathered",
     "There’s only one path",
     "raseac rehpic",
-    '“You see, things aren`t sequential. Good doesn`t lead to good, nor bad to bad. People who steal, don`t get caught, live the good life.”',
+    '“You see, things aren`t sequential. Good doesn`t lead to good, nor bad to bad. People who steal, don`t get caught, live the good life.”',
     "This is a jigsaw puzzle",
 ];
 const hashedMayanAnswers = [
-"$2b$08$4WUlq1kQrBZ/7gQJSgWHrOURypY/moQN49.f6wS72pcOSr/7v.hwW",
-"$2b$08$jNoa7RlxB7bJCh9extf9gu8/FWwMZRPot8cqMsocL/qbbhGyyYW8y",
-"$2b$08$9ZQCSqB7LE3weLZeOyhwQ.C1GmxhisXa1XBPuM0qkZ3Itvp.RZqSC",
-"$2b$08$s.MzqzMrAA2OmJBKPgzMruIKsNapeYQ.SpR/0q.Wx3jKsue3hQjxK",
-"$2b$08$/0L3tjwQXTqd9H70CarMbOVuCsUdzdpbwFxF9xmidooV7FlCpmTdS"
+    "$2b$08$pO4.FifbzhH1k5lGBZen7.Sfrvhlr78SuqXwnWvGyK5SvMVIro.Ae",
+    "$2b$08$jNoa7RlxB7bJCh9extf9gu8/FWwMZRPot8cqMsocL/qbbhGyyYW8y",
+    "$2b$08$9ZQCSqB7LE3weLZeOyhwQ.C1GmxhisXa1XBPuM0qkZ3Itvp.RZqSC",
+    "$2b$08$s.MzqzMrAA2OmJBKPgzMruIKsNapeYQ.SpR/0q.Wx3jKsue3hQjxK",
+    "$2b$08$/0L3tjwQXTqd9H70CarMbOVuCsUdzdpbwFxF9xmidooV7FlCpmTdS"
 ];
 const BonusQuestions = [
     "",
@@ -467,8 +525,16 @@ const hashedBonusAnswers = [
     "$2b$08$0mDNckSrxwCJqkauo6/pX.cbq.ctOD1F3TyDwnce4yOhrafN9KV46"
 ];
 
-app.get("/", (req, res) => res.sendFile(__dirname + "/webPages/index.html"));
+//The below routs are for when the event is over
+//app.get("/", (req, res) => res.sendFile(__dirname + "/webPages/victory.html"));
+// app.get("/playground", (req, res) => res.render("messagePretty", {
+//     message: "The event has ended.Thank you for participating!"
+// }));
+// app.get("/playground/:country", (req, res) => res.render("messagePretty", {
+//     message: "The event has ended.Thank you for participating!"
+// }));
 
+app.get("/",(req,res)=>res.sendFile(__dirname+"/webPages/index.html"))
 app.get("/easteregg", (req, res) => {
     res.sendFile(__dirname + "/webPages/easter.html");
 });
@@ -559,7 +625,9 @@ app.get("/lzxnq", (req, res) => res.sendFile(__dirname + "/webPages/UnitedKingdo
 
 app.get("/greece", (req, res) => {
     if (req.isAuthenticated()) {
-        res.sendFile(__dirname + "/webPages/greeceScroll" + req.user.GreeceQuestionsSolved + ".png");
+        if (Number(req.user.GreeceQuestionsSolved) > 5)
+            return res.redirect("/playground");
+        return res.sendFile(__dirname + "/webPages/greeceScroll" + req.user.GreeceQuestionsSolved + ".png");
     } else {
         res.redirect("/login");
     }
@@ -571,8 +639,12 @@ app.get("/mayanMazeQuestion4", (req, res) => res.sendFile(__dirname + "/webPages
 
 app.get("/bonus", (req, res) => {
     if (req.isAuthenticated()) {
+        if (!req.user.BonusQuestionsVisible)
+            return res.redirect("/playground");
         if (Number(req.user.BonusQuestionsSolved) === 4)
             return res.redirect("/nothinginside.jpg");
+        if (Number(req.user.BonusQuestionsSolved) > 5)
+            return res.redirect("/playground");
         return res.sendFile(__dirname + "/webPages/bonusScroll" + req.user.BonusQuestionsSolved + ".png");
     } else {
         return res.redirect("/login");
@@ -588,12 +660,12 @@ app.get("/playground/:country", (req, res) => {
     //state can be "correctAnswerSubmitted" which que's us to tell the user he submitted the correct answer,
     //state can be "showConfirmationCard" which means user asked for a hint and we need to show him confirmation card.
     //state can be "cooldownViolated" which mean user submitted before the cooldown period was complete
-    let clue = "Ahh! I knew you will look for a key here, but sorry it’s not here \n";
-    clue += "Want a hint??? \n"
-    clue += "Since you are smart enough to search key here, I will give you a hint"
-    clue += "Key was in front of you even before this event started must have seen an easter egg, if you don’t have any idea. You CIRCLED around that key again and again."
-    clue += "and yes, just for your info - I make sensible things, but I won’t force you to do anything"
-    clue += "gotcha?"
+    let clueFirst = "Ahh! I knew you will look for a key here, but sorry it’s not here \n";
+    clueFirst += "Want a hint??? \n"
+    clueFirst += "Since you are smart enough to search key here, I will give you a hint"
+    clueFirst += "Key was in front of you even before this event started must have seen an easter egg, if you don’t have any idea. You CIRCLED around that key again and again."
+    clueFirst += "and yes, just for your info - I make sensible things, but I won’t force you to do anything"
+    clueFirst += "gotcha?"
     if (req.isAuthenticated()) {
         // a card status of 1 reflects that card is locked, 2 reflects card is asking "are you sure", 3 reflects card is unlocked
         if (req.params.country === "Bonus" && !req.user.BonusQuestionsVisible)
@@ -750,7 +822,7 @@ app.get("/playground/:country", (req, res) => {
                 questionContent: BonusQuestions[req.user.BonusQuestionsSolved],
                 questionNumber: req.user.BonusQuestionsSolved,
                 cooldownViolated: (req.query.cooldownViolated ? true : false),
-                clue: req.user.BonusQuestionsSolved == 0 ? clue : "",
+                clue: req.user.BonusQuestionsSolved == 0 ? clueFirst : req.user.BonusQuestionsSolved == 1 ? "8" : "",
                 photoQuestion: Number(req.user.BonusQuestionsSolved) === 0 || Number(req.user.BonusQuestionsSolved) === 1 || Number(req.user.BonusQuestionsSolved) === 4 ? true : false,
                 country: "Bonus"
             });
@@ -789,10 +861,12 @@ app.post("/playground/:country", async (req, res) => {
                 answersArray: [...req.user.answersArray, answer._id],
                 score: req.user.score + increaseInScore,
                 IndiaQuestionsSolved: req.user.IndiaQuestionsSolved + (answerCorrectness ? 1 : 0),
-                latestAnswerTime: submissionTime
+                latestAnswerTime: answerCorrectness ? submissionTime : req.user.latestAnswerTime
             });
         } else if (req.params.country === "UnitedKingdom" && req.user.UnitedKingdomQuestionsSolved < 5) {
             answerCorrectness = await bcrypt.compare(req.body.response, hashedUnitedKingdomAnswers[req.user.UnitedKingdomQuestionsSolved]);
+            if (Number(req.user.UnitedKingdomQuestionsSolved) === 3) //question 4 is wrong. SO for that.
+                answerCorrectness = true;
             const increaseInScore = answerCorrectness ? marksPerQuestion : 0;
             const answer = await new Answer({
                 team: req.user._id,
@@ -813,7 +887,7 @@ app.post("/playground/:country", async (req, res) => {
                 answersArray: [...req.user.answersArray, answer._id],
                 score: req.user.score + increaseInScore,
                 UnitedKingdomQuestionsSolved: req.user.UnitedKingdomQuestionsSolved + (answerCorrectness ? 1 : 0),
-                latestAnswerTime: submissionTime
+                latestAnswerTime: answerCorrectness ? submissionTime : req.user.latestAnswerTime
             });
         } else if (req.params.country === "Greece" && req.user.GreeceQuestionsSolved < 5) {
             answerCorrectness = await bcrypt.compare(req.body.response, hashedGreeceAnswers[req.user.GreeceQuestionsSolved]);
@@ -837,7 +911,7 @@ app.post("/playground/:country", async (req, res) => {
                 answersArray: [...req.user.answersArray, answer._id],
                 score: req.user.score + increaseInScore,
                 GreeceQuestionsSolved: req.user.GreeceQuestionsSolved + (answerCorrectness ? 1 : 0),
-                latestAnswerTime: submissionTime
+                latestAnswerTime: answerCorrectness ? submissionTime : req.user.latestAnswerTime
             });
         } else if (req.params.country === "Egypt" && req.user.EgyptQuestionsSolved < 5) {
             answerCorrectness = await bcrypt.compare(req.body.response, hashedEgyptAnswers[req.user.EgyptQuestionsSolved]);
@@ -861,7 +935,7 @@ app.post("/playground/:country", async (req, res) => {
                 answersArray: [...req.user.answersArray, answer._id],
                 score: req.user.score + increaseInScore,
                 EgyptQuestionsSolved: req.user.EgyptQuestionsSolved + (answerCorrectness ? 1 : 0),
-                latestAnswerTime: submissionTime
+                latestAnswerTime: answerCorrectness ? submissionTime : req.user.latestAnswerTime
             });
         } else if (req.params.country === "Mayan" && req.user.MayanQuestionsSolved < 5) {
             answerCorrectness = await bcrypt.compare(req.body.response, hashedMayanAnswers[req.user.MayanQuestionsSolved]);
@@ -885,7 +959,7 @@ app.post("/playground/:country", async (req, res) => {
                 answersArray: [...req.user.answersArray, answer._id],
                 score: req.user.score + increaseInScore,
                 MayanQuestionsSolved: req.user.MayanQuestionsSolved + (answerCorrectness ? 1 : 0),
-                latestAnswerTime: submissionTime
+                latestAnswerTime: answerCorrectness ? submissionTime : req.user.latestAnswerTime
             });
         } else if (req.params.country === "Bonus" && req.user.BonusQuestionsSolved < 5 && req.user.BonusQuestionsVisible) {
             answerCorrectness = await bcrypt.compare(req.body.response, hashedBonusAnswers[req.user.BonusQuestionsSolved]);
@@ -909,7 +983,7 @@ app.post("/playground/:country", async (req, res) => {
                 answersArray: [...req.user.answersArray, answer._id],
                 score: req.user.score + increaseInScore,
                 BonusQuestionsSolved: req.user.BonusQuestionsSolved + (answerCorrectness ? 1 : 0),
-                latestAnswerTime: submissionTime
+                latestAnswerTime: answerCorrectness ? submissionTime : req.user.latestAnswerTime
             });
         }
 
@@ -921,7 +995,13 @@ app.post("/playground/:country", async (req, res) => {
                 GreeceQuestionsSolved,
                 EgyptQuestionsSolved,
                 MayanQuestionsSolved
-            } = await User.findById(req.user._id);
+            } = await User.findOne({ _id: mongoose.Types.ObjectId(req.user._id) }, {
+                IndiaQuestionsSolved: 1,
+                UnitedKingdomQuestionsSolved: 1,
+                GreeceQuestionsSolved: 1,
+                EgyptQuestionsSolved: 1,
+                MayanQuestionsSolved: 1
+            });
             const bonusQuestionUnlocked = IndiaQuestionsSolved == 5 &&
                 UnitedKingdomQuestionsSolved == 5 &&
                 GreeceQuestionsSolved == 5 &&
@@ -943,20 +1023,24 @@ app.post("/playground/:country", async (req, res) => {
     }
 });
 
-app.get("/admin", (req, res) => {
+app.get("/admin", async (req, res) => {
     if (req.isAuthenticated()) {
         if (req.user.adminPrivilege) {
-            User.find((err, users) => {
-                if (!err) {
-                    res.render("admin", {
-                        teams: users
-                    });
-                } else {
-                    console.log(err);
-                }
+            board = await User.find({}, {
+                username: 1,
+                score: 1,
+                latestAnswerTime: 1,
+                _id: 1,
             });
+            board.sort((left, right) => {
+                if (left.score === right.score) {
+                    return left.latestAnswerTime - right.latestAnswerTime;
+                }
+                return right.score - left.score;
+            });
+            res.render("admin", { teams: board });
         } else {
-            res.redirect("/playground");
+            res.render("message", { message: "AYE! You don't have admin priviledges. Getch yo a$$ outa here!" });
         }
     } else {
         res.redirect("/login");
@@ -975,17 +1059,22 @@ app.get("/teamanswerhistory", async (req, res) => {
             }))
                 return res.send("user doesn't exists");
 
-            const answers = new Array(0);
-            const {
-                answersArray: teamAnswerIds
-            } = await User.findById(req.query.teamid);
-            for (const id of teamAnswerIds)
-                answers.push(await Answer.findById(id));
+            const team = await (User.findOne({ _id: mongoose.Types.ObjectId(req.query.teamid) }));
+            const answers = (await Answer.find({ _id: { $in: team.answersArray } }, {
+                time: 1,
+                correctness: 1,
+                questionAttempted: 1,
+                hintOneTaken: 1,
+                hintTwoTaken: 1,
+                hintThreeTaken: 1,
+                answerSubmitted: 1
+            }));
 
             answers.reverse();
 
             return res.render("teamanswerhistory", {
-                answers: answers
+                answers: answers,
+                team: team
             });
         } else {
             return res.redirect("/playground");
@@ -997,7 +1086,7 @@ app.get("/teamanswerhistory", async (req, res) => {
 
 
 app.get("/leaderboard", (req, res) => {
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated() || true) {
         (async () => {
             board = await User.find({}, {
                 username: 1,

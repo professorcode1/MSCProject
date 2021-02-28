@@ -1,0 +1,72 @@
+@font-face {
+  font-family: "The Goldsmith_Vintage";
+  src: url("./The Goldsmith_Vintage.ttf") format("truetype");
+}
+
+$brown: #744c33;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+div,
+h1,
+h2 {
+  font-family: "The Goldsmith_Vintage";
+  color: $brown;
+}
+
+main {
+  height: 100vh;
+  width: 100vw;
+  background-image: url("./wallpaperbetter.com_1920x1200.jpg");
+  background-size: cover;
+  overflow: hidden;
+}
+
+.title {
+  font-size: 1.8em;
+  margin: 5vh 3vw;
+  letter-spacing: 0.1em;
+}
+
+.winnerOne {
+  background: rgba(194, 183, 119, 0.6);
+  margin: 5vh 5vw;
+  padding: 4vh 2vw;
+  width: 40%;
+  border-radius: 2em;
+
+  .winnerOneHeading {
+    font-size: 1.8em;
+    letter-spacing: 0.1em;
+  }
+
+  .winnerStats {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin: 1em 0 0 0;
+  }
+
+  .winnerTime,
+  .winnerHints,
+  .winnerPoints {
+    margin: 0.2em 1em;
+    font-size: 1.2em;
+    letter-spacing: 0.01em;
+    flex: 20%;
+  }
+
+  .winnerHints {
+    font-size: 1.2em;
+    flex: 25%;
+  }
+  .winnerName {
+    font-size: 1.3em;
+    flex: 30%;
+  }
+}
