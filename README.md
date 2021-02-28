@@ -11,7 +11,8 @@ To use the portal
 - Git clone this repo
 - run ``` npm install ``` to get all the node modules
 - run ``` node app.js ``` to start the website on your localhost
-- in the app.js file on line 24 change ``` 
+- in the app.js file on line 24 change 
+``` 
 mongoose.connect("mongodb+srv://cluster0.tbblr.mongodb.net/MLSCScavengerHuntDep", {
     poolSize: 460,
     auth: {
@@ -22,7 +23,7 @@ mongoose.connect("mongodb+srv://cluster0.tbblr.mongodb.net/MLSCScavengerHuntDep"
     useUnifiedTopology: true
 });
  ``` 
- to
+  to
  ```
  mongoose.connect("mongodb://localhost:27017/MLSCScavengerHuntDep", {
     useNewUrlParser: true,
