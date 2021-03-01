@@ -8,13 +8,12 @@ There were 130+ participanting teams and 12000+ answers were submitted.<br><br>
 Right below are photos of the applicatin. <br>
 After that is some explanation of the code that is inside app.js. <br>
 At the end of this document are the answers to the questions (without explanation). <br><br>
-
-<img alt="preview" src="ScreenShots/login.png" width="40%" style="display:inline-block;">
-<img alt="preview" src="ScreenShots/register.png" width="40%" style="display:inline-block;">
-<img alt="preview" src="ScreenShots/homepage.png" width="90%">
 <img alt="preview" src="ScreenShots/leaderBoard.png" width="90%">
 <img alt="preview" src="ScreenShots/UnitedKingdom.png" width="90%">
 <img alt="preview" src="ScreenShots/Bonus.png" width="90%">
+<img alt="preview" src="ScreenShots/login.png" width="90%" >
+<img alt="preview" src="ScreenShots/register.png" width="9%" >
+<img alt="preview" src="ScreenShots/homepage.png" width="90%">
 The backend uses Passport for authentication and is attached to a MongoDB Database on MongoDB Atlas. <br><br>
 
 The database has 2 collections: Users and Answers. Even though Users and Answers have a composition relationship (users are composed of a set of answers),
