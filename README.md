@@ -5,13 +5,21 @@
 The portal was used to host the MLSC Online Scavenger Hunt starting at 12 AM on 27th February 2021 and ending at 5 PM on 28th February 2021(41 hours).
 There were 130+ participanting teams and 12000+ answers were submitted.<br><br>
 
-Below is some explanation of the code that is inside app.js. At the end of this document are the answers to the questions (without explanation). <br><br>
+Right below are photos of the applicatin. <br>
+After that is some explanation of the code that is inside app.js. <br>
+At the end of this document are the answers to the questions (without explanation). <br><br>
 
+<img alt="preview" src="ScreenShots/login.png" width="40%" style="display:inline-block;">
+<img alt="preview" src="ScreenShots/register.png" width="40%" style="display:inline-block;">
+<img alt="preview" src="ScreenShots/homepage.png" width="90%">
+<img alt="preview" src="ScreenShots/leaderBoard.png" width="90%">
+<img alt="preview" src="ScreenShots/UnitedKingdom.png" width="90%">
+<img alt="preview" src="ScreenShots/Bonus.png" width="90%">
 The backend uses Passport for authentication and is attached to a MongoDB Database on MongoDB Atlas. <br><br>
 
 The database has 2 collections: Users and Answers. Even though Users and Answers have a composition relationship (users are composed of a set of answers),
 in the database it has been implimented as an assosiation relationships (every answer knows which team it was given by and each team has a list of id's
-of all the answers it gave). This is because implimenting it this way made managing and quering on the database made easier.<br><br>
+of all the answers it gave). This is because implimenting it this way made managing and quering on the database much easier.<br><br>
 
 All the question,hints and answers are stored in constant arrays.<br>
 The answers are hashed using bcrypt so that even if the source code was to get leaked only the hints and questions would get compromised,not the answers.<br>
@@ -50,7 +58,7 @@ mongoose.connect("mongodb+srv://cluster0.tbblr.mongodb.net/MLSCScavengerHuntDep"
 - now just open any browser and goto localhost:3000
 - enjoy the contest.
 
-##Answers <br>
+Answers <br>
 INDIA : kuttanad , deepintotheforestliesaboxofcursesandrichesfilledwithgreedenvyhatredpai , champagali , 34201814 , 4980101<br>
 UNITED KINGDOM : excalibur , 519874143208 , 18061942 , literally anything will work for this question, davethomas<br>
 GREECE : atlantis , trident , poseidon , 277 , olympian<br>
