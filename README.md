@@ -12,7 +12,7 @@ At the end of this document are the answers to the questions (without explanatio
 <img alt="preview" src="ScreenShots/UnitedKingdom.png" width="90%">
 <img alt="preview" src="ScreenShots/Bonus.png" width="90%">
 <img alt="preview" src="ScreenShots/login.png" width="90%" >
-<img alt="preview" src="ScreenShots/register.png" width="9%" >
+<img alt="preview" src="ScreenShots/register.png" width="90%" >
 <img alt="preview" src="ScreenShots/homepage.png" width="90%">
 The backend uses Passport for authentication and is attached to a MongoDB Database on MongoDB Atlas. <br><br>
 
